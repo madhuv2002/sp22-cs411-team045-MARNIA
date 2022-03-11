@@ -14,7 +14,7 @@ def dup_apostrophes(s):
 df = pd.read_csv("MoviesOnStreamingPlatforms.csv")
 ret = ""
 for i in range(len(df)):
-    ret += "INSERT INTO Movies VALUES(" + str(df["ID"][i]) + "," 
+    ret += "INSERT INTO Movie VALUES(" + str(df["ID"][i]) + "," 
     ret += "'" + dup_apostrophes(df["Title"][i]) + "',"
     ret += str(df["Year"][i]) + ","
     if pd.isna(df["Age"][i]):
