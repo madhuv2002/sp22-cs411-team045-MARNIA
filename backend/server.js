@@ -20,7 +20,30 @@ connection.connect;
 
 var app = express();
 
+
+
 app.get('/movies', (request, response) => {
+    var sql = "SELECT * FROM Movie m WHERE";
+    var conditions = [];
+    var age_rating = request.query.age_rating;
+    var year = request.query.year;
+    var netflix = request.query.netflix;
+    var hulu = request.query.hulu;
+    var disneyplus = request.query.disneyplus;
+    var primevideo = request.query.primevideo;
+    var score = request.query.score;
+    if (age_rating != null) {
+        conditions.push(`(m.AgeRating) == ${age_rating}`);
+    }
+    if (year != null) {
+        conditions.push(`(m.Year) == ${year}`)
+    }
+    var platform = ""
+    if (netflix) {
+        conditions.push(`(m.Year) == ${year}`)
+    }
+    
+    
     
 
 });
