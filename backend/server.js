@@ -35,7 +35,7 @@ app.get('/movies', (request, response) => {
     if (age_rating != null) {
         conditions.push(`(m.AgeRating == ${age_rating})`);
     }
-    if (year != null) {
+    if (year != 0) {
         conditions.push(`(m.Year == ${year})`);
     }
     if (netflix) {
