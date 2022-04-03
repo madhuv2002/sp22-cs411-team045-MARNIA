@@ -132,3 +132,15 @@ app.get('/platforms', (request, response) => {
         response.send(result);
     })
 });
+
+app.put('/ratings', (request, response) => {
+    var movieId = request.query.movieId;
+    var userId = request.query.UserId;
+    var updatedRating = request.query.updatedRating;
+    var sql = `UPDATE Rating r SET r.Score = ${updatedRating} WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+    });
+});
