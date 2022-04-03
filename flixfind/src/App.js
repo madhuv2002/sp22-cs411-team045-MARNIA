@@ -1,11 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
+import ReactDOM from 'react-dom';
 import React from 'react';
 // import { Header, Table, Rating } from 'semantic-ui-react'
 // import 'semantic-ui-css/semantic.min.css'; 
 import '@ant-design/compatible/assets/index.css';
 
-import { Table, Tag, Space } from 'antd';
+import { Table, Tag, Space, Checkbox, Slider, Switch } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 const columns = [
   {
@@ -98,9 +99,37 @@ const data = [
   },
 ];
 
+function onChange(checkedValues) {
+  console.log('checked = ', checkedValues);
+}
+
+const platformOptions = [
+  { label: 'Netflix', value: 'Netflix' },
+  { label: 'Disney+', value: 'Disney+' },
+  { label: 'Hulu', value: 'Hulu' },
+  { label: 'Prime Video', value: 'Prime Video' },
+];
+
+const ageOptions = [
+  { label: '7+', value: '7+' },
+  { label: '13+', value: '13+' },
+  { label: '16+', value: '16+' },
+  { label: '18+', value: '18+' },
+];
+
+
 function App() {
   return (
     <div className="App">
+      <div className='Filters'>
+          <Checkbox.Group options={platformOptions} defaultValue={['Pear']} onChange={onChange} />
+          <br />
+          <br />
+          <Checkbox.Group options={ageOptions} defaultValue={['Pear']} onChange={onChange} />
+          <br />
+          <Slider defaultValue={70} />
+          <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
+      </div>
       <div className='movies-table'>
       <Table columns={columns} dataSource={data} />    
       </div>
