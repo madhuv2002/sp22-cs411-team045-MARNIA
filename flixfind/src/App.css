@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+ /* text-align: center; */
 }
 
 .App-logo {
@@ -30,6 +30,11 @@
 
 .movies-table {
   padding: 10%;
+}
+
+.Filters {
+  margin-left: 2%;
+  margin-top: 5%;
 }
 
 @keyframes App-logo-spin {
