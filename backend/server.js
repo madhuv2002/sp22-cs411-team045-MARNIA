@@ -39,7 +39,7 @@ app.get('/movies', (request, response) => {
     if (age_rating != null) {
         conditions.push(`(m.AgeRating == ${age_rating})`);
     }
-    if (year != 0) {
+    if (year != null) {
         conditions.push(`(m.Year == ${year})`);
     }
     if (netflix) {
@@ -54,7 +54,10 @@ app.get('/movies', (request, response) => {
     if (primevideo) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a3 WHERE a3.MovieId = m.MovieId and a3.PlatformName = 'Prime Video'))`);
     }
-    conditions.push(`(m.Score >= ${score})`);
+    if (score != null) {
+        conditions.push(`(m.Score >= ${score})`);
+    }
+    
 
     for (let i = 0; i < conditions.length; i++) {
         if (i == 0) {
@@ -65,6 +68,7 @@ app.get('/movies', (request, response) => {
             sql += "AND ";
         }
     }
+    
     console.log(sql);
 
     connection.query(sql, (err, result) => {
