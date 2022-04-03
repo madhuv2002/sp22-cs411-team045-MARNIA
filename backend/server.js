@@ -8,7 +8,7 @@ const res = require('express/lib/response');
 
 var connection = mysql.createConnection({
                 host: '34.70.249.172',
-                user: 'root',
+                user: 'raghav',
                 password: 'flixfind123',
                 database: 'flixfind'
 });
@@ -151,3 +151,4 @@ app.get('/', (request, response) => {
 //         response.send('Got a PUT request');
 //     });
 // });
+app.listen(9000);
