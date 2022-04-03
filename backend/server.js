@@ -27,7 +27,7 @@ app.get('/', (request, response) => {
 )
 
 app.get('/movies', (request, response) => {
-    var sql = "SELECT * FROM Movie m WHERE ";
+    var sql = "SELECT * FROM Movie m";
     var conditions = [];
     var age_rating = request.query.age_rating;
     var year = request.query.year;
@@ -57,11 +57,15 @@ app.get('/movies', (request, response) => {
     conditions.push(`(m.Score >= ${score})`);
 
     for (let i = 0; i < conditions.length; i++) {
+        if (i == 0) {
+            sql += " WHERE ";
+        }
         sql += conditions[i] + " ";
         if (i != conditions.length - 1) {
             sql += "AND ";
         }
     }
+    console.log(sql);
 
     connection.query(sql, (err, result) => {
         if (err) {
