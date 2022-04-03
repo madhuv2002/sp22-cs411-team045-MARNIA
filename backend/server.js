@@ -96,6 +96,7 @@ app.post('/list', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        response.send('Got a POST request');
     });
 
 });
@@ -119,6 +120,7 @@ app.post('/listmovie', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        response.send('Got a POST request');
     });
 });
 
@@ -142,5 +144,6 @@ app.put('/ratings', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        response.send('Got a PUT request');
     });
 });
