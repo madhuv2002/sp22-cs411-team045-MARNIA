@@ -151,7 +151,10 @@ app.get('/', (request, response) => {
 //         response.send('Got a PUT request');
 //     });
 // });
-app.listen(9000);
+app.listen(80, function () {
+    console.log('Node app is running on port 80');
+});
+
 
 // app.delete('/listmovie', (request, response) => {
 //    var listId = request.query.listId;
