@@ -9,31 +9,46 @@ import { Table, Tag, Space } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
     render: text => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: 'Score',
+    dataIndex: 'score',
+    key: 'score',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'Age Rating',
+    dataIndex: 'ageRating',
+    key: 'ageRating',
   },
   {
-    title: 'Tags',
-    key: 'tags',
-    dataIndex: 'tags',
+    title: 'Year',
+    dataIndex: 'year',
+    key: 'year',
+  },
+  {
+    title: 'Platforms',
+    key: 'platforms',
+    dataIndex: 'platforms',
+
     render: tags => (
       <>
         {tags.map(tag => {
-          let color = tag.length > 5 ? 'geekblue' : 'green';
-          if (tag === 'loser') {
-            color = 'volcano';
+          let color = 'white';
+          if (tag === 'Netflix') {
+            color = 'red';
+          }
+          if (tag === 'Hulu') {
+            color = 'green';
+          }
+          if (tag === 'Disney+') {
+            color = 'geekblue';
+          }
+          if (tag === 'Prime Video') {
+            color = 'blue'
           }
           return (
             <Tag color={color} key={tag}>
@@ -49,8 +64,8 @@ const columns = [
     key: 'action',
     render: (text, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <a>Add {record.name}</a>
+        <a>Remove</a>
       </Space>
     ),
   },
@@ -59,24 +74,27 @@ const columns = [
 const data = [
   {
     key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
+    title: 'John Brown',
+    ageRating: 32,
+    score: 0,
+    year: 'New York No. 1 Lake Park',
+    platforms: ['Netflix', 'Hulu'],
   },
   {
     key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
+    title: 'Jim Green',
+    ageRating: 42,
+    score: 0,
+    year: 'London No. 1 Lake Park',
+    platforms: ['Prime Video'],
   },
   {
     key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
+    title: 'Joe Black',
+    ageRating: 32,
+    score: 0,
+    year: 'Sidney No. 1 Lake Park',
+    platforms: ['Disney+', 'Hulu'],
   },
 ];
 
