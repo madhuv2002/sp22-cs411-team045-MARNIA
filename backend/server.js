@@ -26,50 +26,50 @@ app.get('/', (request, response) => {
 }
 )
 
-// app.get('/movies', (request, response) => {
-//     var sql = "SELECT * FROM Movie m WHERE ";
-//     var conditions = [];
-//     var age_rating = request.query.age_rating;
-//     var year = request.query.year;
-//     var netflix = request.query.netflix;
-//     var hulu = request.query.hulu;
-//     var disneyplus = request.query.disneyplus;
-//     var primevideo = request.query.primevideo;
-//     var score = request.query.score;
-//     if (age_rating != null) {
-//         conditions.push(`(m.AgeRating == ${age_rating})`);
-//     }
-//     if (year != 0) {
-//         conditions.push(`(m.Year == ${year})`);
-//     }
-//     if (netflix) {
-//         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a WHERE a.MovieId = m.MovieId and a.PlatformName = 'Netflix'))`);
-//     }
-//     if (hulu) {
-//         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a1 WHERE a1.MovieId = m.MovieId and a1.PlatformName = 'Hulu'))`);
-//     }
-//     if (disneyplus) {
-//         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a2 WHERE a2.MovieId = m.MovieId and a2.PlatformName = 'Disney+'))`);
-//     }
-//     if (primevideo) {
-//         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a3 WHERE a3.MovieId = m.MovieId and a3.PlatformName = 'Prime Video'))`);
-//     }
-//     conditions.push(`(m.Score >= ${score})`);
+app.get('/movies', (request, response) => {
+    var sql = "SELECT * FROM Movie m WHERE ";
+    var conditions = [];
+    var age_rating = request.query.age_rating;
+    var year = request.query.year;
+    var netflix = request.query.netflix;
+    var hulu = request.query.hulu;
+    var disneyplus = request.query.disneyplus;
+    var primevideo = request.query.primevideo;
+    var score = request.query.score;
+    if (age_rating != null) {
+        conditions.push(`(m.AgeRating == ${age_rating})`);
+    }
+    if (year != 0) {
+        conditions.push(`(m.Year == ${year})`);
+    }
+    if (netflix) {
+        conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a WHERE a.MovieId = m.MovieId and a.PlatformName = 'Netflix'))`);
+    }
+    if (hulu) {
+        conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a1 WHERE a1.MovieId = m.MovieId and a1.PlatformName = 'Hulu'))`);
+    }
+    if (disneyplus) {
+        conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a2 WHERE a2.MovieId = m.MovieId and a2.PlatformName = 'Disney+'))`);
+    }
+    if (primevideo) {
+        conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a3 WHERE a3.MovieId = m.MovieId and a3.PlatformName = 'Prime Video'))`);
+    }
+    conditions.push(`(m.Score >= ${score})`);
 
-//     for (let i = 0; i < conditions.length; i++) {
-//         sql += conditions[i] + " ";
-//         if (i != conditions.length - 1) {
-//             sql += "AND ";
-//         }
-//     }
+    for (let i = 0; i < conditions.length; i++) {
+        sql += conditions[i] + " ";
+        if (i != conditions.length - 1) {
+            sql += "AND ";
+        }
+    }
 
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send(result);
-//     });
-// });
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+});
 
 // app.get('/list', (request, response) => {
 //     var blackList = request.query.blackList;
