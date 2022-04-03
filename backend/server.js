@@ -151,3 +151,15 @@ app.get('/', (request, response) => {
 //         response.send('Got a PUT request');
 //     });
 // });
+
+// app.delete('/listmovie', (request, response) => {
+//    var listId = request.query.listId;
+//    var movieId = request.query.movieId;
+//    var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
+//    connection.query(sql, (err, result) => {
+//        if (err) {
+//            response.status(400).send('Error in database operation');
+//        }
+//        response.send('Got a DELETE request at/listmovie');
+//    });
+// });
