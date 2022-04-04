@@ -46,16 +46,16 @@ app.get('/movies', (request, response) => {
     if (min_year != null && max_year != null) {
         conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
     }
-    if (netflix) {
+    if (netflix == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a WHERE a.MovieId = m.MovieId and a.PlatformName = 'Netflix'))`);
     }
-    if (hulu) {
+    if (hulu == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a1 WHERE a1.MovieId = m.MovieId and a1.PlatformName = 'Hulu'))`);
     }
-    if (disneyplus) {
+    if (disneyplus == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a2 WHERE a2.MovieId = m.MovieId and a2.PlatformName = 'Disney+'))`);
     }
-    if (primevideo) {
+    if (primevideo == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a3 WHERE a3.MovieId = m.MovieId and a3.PlatformName = 'Prime Video'))`);
     }
     if (score != null) {
