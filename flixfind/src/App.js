@@ -6,7 +6,7 @@ import React from 'react';
 // import 'semantic-ui-css/semantic.min.css'; 
 import '@ant-design/compatible/assets/index.css';
 import { Rate } from 'antd';
-import { Table, Tag, Space, Checkbox, Slider, Switch } from 'antd';
+import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 const columns = [
   {
@@ -130,15 +130,32 @@ const ageOptions = [
   { label: '18+', value: '18+' },
 ];
 
+const AgeButtons = () => {
+  const [value, setValue] = React.useState(1);
+
+  const onChange = e => {
+    console.log('radio checked', e.target.value);
+    setValue(e.target.value);
+  };
+
+  return (
+    <Radio.Group options={ageOptions} onChange={onChange} value={value}>
+      <Radio value={1}>A</Radio>
+      <Radio value={2}>B</Radio>
+      <Radio value={3}>C</Radio>
+      <Radio value={4}>D</Radio>
+    </Radio.Group>
+  );
+};
 
 function App() {
   return (
     <div className="App">
       <div className='Filters'>
-          <Checkbox.Group options={platformOptions} defaultValue={['Pear']} onChange={onChange} />
+          <Checkbox.Group options={platformOptions} onChange={onChange} />
           <br />
           <br />
-          <Checkbox.Group options={ageOptions} defaultValue={['Pear']} onChange={onChange} />
+          <AgeButtons></AgeButtons>
           <br />
           <Slider defaultValue={70} />
           <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
