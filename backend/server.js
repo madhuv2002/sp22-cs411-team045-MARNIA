@@ -163,6 +163,34 @@ app.get('/platforms', (request, response) => {
     
 });
 
+// app.get('/ratings', (request, response) => {
+// 	var movieId = request.query.movieId;
+// 	var userId = request.query.userId;
+	
+// 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
+//     connection.query(sql, (err, result) => {
+//         if (err) {
+//             response.status(400).send('Error in database operation');
+//         }
+//         response.send(result);
+//     });
+// });
+
+// app.post('/ratings', (request, response) => {
+//     var userId = request.query.userId;
+// 	var movieId = request.query.movieId;
+//     var dateTime = request.query.dateTime;
+//     var ratingScore = request.query.ratingScore;
+	
+// 	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore})`;
+//     connection.query(sql, (err, result) => {
+//         if (err) {
+//             response.status(400).send('Error in database operation');
+//         }
+//         response.send('Got a POST request');
+//     });
+// });
+
 // app.put('/ratings', (request, response) => {
 //     var movieId = request.query.movieId;
 //     var userId = request.query.UserId;
