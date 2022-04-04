@@ -45,7 +45,7 @@ app.get('/movies', (request, response) => {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
     if (age_rating != null) {
-        conditions.push(`(m.AgeRating == '${age_rating}')`);
+        conditions.push(`(m.AgeRating = '${age_rating}')`);
     }
     if (min_year != null && max_year != null) {
         conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
@@ -122,11 +122,14 @@ app.post('/list', (request, response) => {
     } else {
         sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
     }
+    console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
-        response.send('Got a POST request');
+        console.log('record inserted');
+        res.redirect('/');
+    
     });
 
 });
