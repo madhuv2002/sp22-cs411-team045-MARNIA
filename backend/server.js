@@ -134,7 +134,7 @@ app.post('/list', (request, response) => {
 
 app.get('/listmovie', (request, response) => {
     var listId = request.query.listId;
-    var sql = `SELECT * FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+    var sql = `SELECT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
