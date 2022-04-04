@@ -140,16 +140,18 @@ app.get('/movies', (request, response) => {
 //     });
 // });
 
-// app.get('/platforms', (request, response) => {
-//     var movieId = request.query.movieId;
-//     var sql = `SELECT a.PlatformName FROM MoviePlatformAssociation a WHERE a.MovieId = ${movieId}`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send(result);
-//     })
-// });
+app.get('/platforms', (request, response) => {
+    var sql = "SELECT * FROM MoviePlatformAssociation a"
+    console.log(sql);
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+    
+});
 
 // app.put('/ratings', (request, response) => {
 //     var movieId = request.query.movieId;
