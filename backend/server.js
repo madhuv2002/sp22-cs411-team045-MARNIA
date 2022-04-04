@@ -91,62 +91,79 @@ app.get('/movies', (request, response) => {
     });
 });
 
-// app.get('/list', (request, response) => {
-//     var blackList = request.query.blackList;
-//     var sql;
-//     if (blackList) {
-//         sql = `SELECT * FROM BlackList b WHERE b.ListId = ${listId}`
-//     } else {
-//         sql = `SELECT * FROM WatchList w WHERE w.ListId = ${listId}`
-//     }
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send(result);
-//     });
-// });
-// app.post('/list', (request, response) => {
-//     var blackList = request.query.blackList;
-//     var listId = request.query.listId;
-//     var userId = request.query.UserId;
-//     var sql;
-//     if (blackList) {
-//         sql = `INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}); INSERT INTO MovieList(ListId) VALUES (${listId})`;
-//     } else {
-//         sql = `INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId}; INSERT INTO MovieList(ListId) VALUES (${listId}))`;
-//     }
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send('Got a POST request');
-//     });
+app.get('/list', (request, response) => {
+    var blackList = request.query.blackList;
+    var listId = request.query.listId;
+    var sql;
+    if (listId == null) {
+        sql = `SELECT * FROM MovieList m`
+    } else {
+        if (blackList) {
+            sql = `SELECT * FROM BlackList b WHERE b.ListId = ${listId}`
+        } else {
+            sql = `SELECT * FROM WatchList w WHERE w.ListId = ${listId}`
+        }
+    }
+    
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+});
+app.post('/list', (request, response) => {
+    var blackList = request.query.blackList;
+    var listId = request.query.listId;
+    var userId = request.query.UserId;
+    var sql;
+    if (blackList) {
+        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
+    } else {
+        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
+    }
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send('Got a POST request');
+    });
 
-// // });
+});
 
 
-// app.get('/listmovie', (request, response) => {
-//     var listId = request.query.listId;
-//     var sql = `SELECT * FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send(result);
-//     });
-// });
-// app.post('/listmovie', (request, response) => {
-//     var listId = request.query.listId;
-//     var movieId = request.query.movieId;
-//     var sql = `INSERT INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send('Got a POST request');
-//     });
-// });
+app.get('/listmovie', (request, response) => {
+    var listId = request.query.listId;
+    var sql = `SELECT * FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+});
+app.post('/listmovie', (request, response) => {
+    var listId = request.query.listId;
+    var movieId = request.query.movieId;
+    var sql = `INSERT INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send('Got a POST request');
+    });
+});
+app.delete('/listmovie', (request, response) => {
+   var listId = request.query.listId;
+   var movieId = request.query.movieId;
+   var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
+   connection.query(sql, (err, result) => {
+       if (err) {
+           response.status(400).send('Error in database operation');
+       }
+       response.send('Got a DELETE request at/listmovie');
+   });
+});
 
 app.get('/platforms', (request, response) => {
     var sql = "SELECT * FROM MoviePlatformAssociation a"
@@ -181,14 +198,4 @@ app.listen(80, function () {
 
 
 
-// app.delete('/listmovie', (request, response) => {
-//    var listId = request.query.listId;
-//    var movieId = request.query.movieId;
-//    var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
-//    connection.query(sql, (err, result) => {
-//        if (err) {
-//            response.status(400).send('Error in database operation');
-//        }
-//        response.send('Got a DELETE request at/listmovie');
-//    });
-// });
+
