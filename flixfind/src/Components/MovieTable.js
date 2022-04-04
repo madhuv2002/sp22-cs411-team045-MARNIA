@@ -88,6 +88,7 @@ const MovieTable = () => {
   const [hulu, setHulu] = useState();
   const [prime, setPrime] = useState();
   const [disney, setDisney] = useState();
+  
   const [movies, setMovies] = useState([]);
   const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   function onChange(checkedValues) {
@@ -98,17 +99,19 @@ const MovieTable = () => {
       setNetflix(0);
     }
     if (checkedValues.includes('Hulu')) {
+      setHulu(1);
     } else {
+      setHulu(0);
     }
     if (checkedValues.includes('Prime Video')) {
-
+      setPrime(1);
     } else {
-     
+      setPrime(0);
     }
     if (checkedValues.includes('Disney+')) {
-
+      setDisney(1);
     } else {
-  
+      setDisney(0);
     }
   }
   
@@ -127,31 +130,22 @@ const MovieTable = () => {
     { label: 'All', value: null },
   ];
 
+
+  const [age, setAge] = useState();
+  
   const AgeButtons = () => {
-    const [value, setValue] = React.useState(1);
+    const [value, setValue] = React.useState();
   
-    const onChange = e => {
+    const onClick = e => {
       setValue(e.target.value);
-      if (e.target.value === ('7+')) {
-       
-      } else if (e.target.value === ('13+')) {
-      
-      }  else if (e.target.value === ('16+')) {
-       
-      }  else if (e.target.value === ('18+')) {
-   
-     
-      } else {
-  
-      }
+      setAge(value);
     };
-  
+
     return (
-      <Radio.Group options={ageOptions} onChange={onChange} value={value}>
-        <Radio value={1}>A</Radio>
-        <Radio value={2}>B</Radio>
-        <Radio value={3}>C</Radio>
-        <Radio value={4}>D</Radio>
+      <Radio.Group options={ageOptions} onClick={() => console.log("Should me logged")} value={value}>
+        <Radio.Button
+        onClick={() => console.log("Should be logged")}>
+      </Radio.Button>
       </Radio.Group>
     );
   };
@@ -175,7 +169,7 @@ const MovieTable = () => {
     console.log("movies useeffect");
     const populateMovies = [];
     const fetchMovies = async () => {
-    var filters = {age_rating: null, min_year: null, max_year: null, netflix:netflix, hulu: 0, disneyplus: 0, primevideo: 0, score: null};
+    var filters = {age_rating:age, min_year: null, max_year: null, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score: null};
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -197,9 +191,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix]);
-
-
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age]);
 
 
   return (
