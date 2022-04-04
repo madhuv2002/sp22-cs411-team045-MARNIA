@@ -5,7 +5,7 @@ import React from 'react';
 // import { Header, Table, Rating } from 'semantic-ui-react'
 // import 'semantic-ui-css/semantic.min.css'; 
 import '@ant-design/compatible/assets/index.css';
-
+import { Rate } from 'antd';
 import { Table, Tag, Space, Checkbox, Slider, Switch } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 const columns = [
@@ -29,6 +29,16 @@ const columns = [
     title: 'Year',
     dataIndex: 'year',
     key: 'year',
+  },
+  {
+    title: 'User Rating',
+    dataIndex: 'userRating',
+    key: 'userRating',
+    render: rating => {
+      return (
+        <Rate allowHalf defaultValue={0}>{rating}</Rate>
+      );
+    }
   },
   {
     title: 'Platforms',
@@ -80,6 +90,7 @@ const data = [
     score: 0,
     year: 'New York No. 1 Lake Park',
     platforms: ['Netflix', 'Hulu'],
+    userRating: 2.5,
   },
   {
     key: '2',
@@ -88,6 +99,7 @@ const data = [
     score: 0,
     year: 'London No. 1 Lake Park',
     platforms: ['Prime Video'],
+    userRating: 3,
   },
   {
     key: '3',
@@ -96,6 +108,7 @@ const data = [
     score: 0,
     year: 'Sidney No. 1 Lake Park',
     platforms: ['Disney+', 'Hulu'],
+    userRating: 2.5,
   },
 ];
 
