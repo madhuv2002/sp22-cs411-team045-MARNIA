@@ -153,12 +153,15 @@ const MovieTable = () => {
   const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   
   useEffect(() => {
+    console.log("fetching platforms");
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
       const mToP = new Map();
       platformRes.forEach(async function(x) {
-        mToP[x.MovieId] = x.PlatformName;
-        // console.log(x);
+        if (mToP[x.MovieId]== null) {
+          mToP[x.MovieId] = []
+        }
+        mToP[x.MovieId].push(x.PlatformName);
       })
       setMoviesToPlatforms(mToP);
     }
@@ -166,6 +169,7 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
+    console.log("fetch movies");
     const populateMovies = [];
     const fetchMovies = async () => {
       try {
@@ -176,14 +180,15 @@ const MovieTable = () => {
         // platformObjects.forEach(function(p) {
         //   platforms.push(p.PlatformName);
         // })
-        // console.log(platforms);
-        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: movieToPlatforms[movie.MovieId], userRating: 2});
+       var platforms = movieToPlatforms[movie.MovieId]
+       if (movieToPlatforms[movie.MovieId] == null) {
+         platforms = []
+       }
+        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: 2});
       }) }
       catch (e) {
         console.log(e);
-      }
-      
-     
+      }  
       setMovies(populateMovies);
     };
     fetchMovies();
