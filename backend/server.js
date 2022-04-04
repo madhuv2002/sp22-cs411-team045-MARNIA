@@ -208,6 +208,7 @@ app.get('/platforms', (request, response) => {
 //         if (err) {
 //             response.status(400).send('Error in database operation');
 //         }
+//         console.log('record inserted');
 //         response.send('Got a POST request');
 //     });
 // });
