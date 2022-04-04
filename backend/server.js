@@ -45,7 +45,7 @@ app.get('/movies', (request, response) => {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
     if (age_rating != null) {
-        conditions.push(`(m.AgeRating == '${age_rating}')`);
+        conditions.push(`(m.AgeRating = '${age_rating}')`);
     }
     if (min_year != null && max_year != null) {
         conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
