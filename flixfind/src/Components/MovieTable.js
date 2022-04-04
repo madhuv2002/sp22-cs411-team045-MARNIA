@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import '@ant-design/compatible/assets/index.css';
-import { Rate } from 'antd';
-import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
+import { Rate, Input, Space } from 'antd';
+import { Table, Tag, Checkbox, Slider, Radio } from 'antd';
+import { Modal, Button } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import FlixService from '../api';
 import { NULL } from 'mysql/lib/protocol/constants/types';
 
 
 const MovieTable = () => {
+
   const columns = [
     {
       title: 'Title',
@@ -90,9 +92,27 @@ const MovieTable = () => {
   const [disney, setDisney] = useState();
   
   const [movies, setMovies] = useState([]);
+  const { Search } = Input;
+  const [search, setSearch] = useState();
   const [movieToPlatforms, setMoviesToPlatforms] = useState({});
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+
+  const onSearch = value => setSearch(value);
   function onChange(checkedValues) {
-    console.log("ON CHANGE");
     if (checkedValues.includes('Netflix')) {
       setNetflix(1);
     } else {
@@ -166,10 +186,9 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
-    console.log("movies useeffect");
     const populateMovies = [];
     const fetchMovies = async () => {
-    var filters = {age_rating:age, min_year: null, max_year: null, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score: null};
+    var filters = {age_rating:age, min_year: null, max_year: null, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score: null, search: search};
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -191,13 +210,14 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix, disney, hulu, prime, age]);
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search]);
 
 
   return (
     <div className="App">
     <div className='Filters'>
         <Checkbox.Group options={platformOptions} onChange={onChange} />
+
         <br />
         <br />
         <AgeButtons></AgeButtons>
@@ -205,6 +225,19 @@ const MovieTable = () => {
         <Slider defaultValue={70} />
         <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
     </div>
+    <div>
+    <Search placeholder="input search text" onSearch={onSearch} enterButton />
+    </div>
+    <div>
+    <Button type="primary" onClick={showModal}>
+        View WatchList
+      </Button>
+    </div>
+    <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     <div className='movies-table'>
     <Table columns={columns} dataSource={movies} />    
     </div>
