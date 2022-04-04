@@ -32,6 +32,7 @@ app.get('/', (request, response) => {
 app.get('/movies', (request, response) => {
     var sql = "SELECT * FROM Movie m";
     var conditions = [];
+    var search = request.query.search;
     var age_rating = request.query.age_rating;
     var min_year = request.query.min_year;
     var max_year = request.query.max_year;
@@ -40,6 +41,9 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
+    if (search != null) {
+        conditions.push(`(m.Title LIKE '${search}%')`)
+    }
     if (age_rating != null) {
         conditions.push(`(m.AgeRating == '${age_rating}')`);
     }
