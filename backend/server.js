@@ -41,7 +41,7 @@ app.get('/movies', (request, response) => {
     var primevideo = request.query.primevideo;
     var score = request.query.score;
     if (age_rating != null) {
-        conditions.push(`(m.AgeRating == ${age_rating})`);
+        conditions.push(`(m.AgeRating == '${age_rating}')`);
     }
     if (min_year != null && max_year != null) {
         conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
@@ -61,6 +61,7 @@ app.get('/movies', (request, response) => {
     if (score != null) {
         conditions.push(`(m.Score >= ${score})`);
     }
+
     
 
     for (let i = 0; i < conditions.length; i++) {
@@ -72,6 +73,8 @@ app.get('/movies', (request, response) => {
             sql += "AND ";
         }
     }
+
+
     
     console.log(sql);
 
@@ -148,7 +151,9 @@ app.get('/platforms', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        console.log(response);
         response.send(result);
+        
     });
     
 });
