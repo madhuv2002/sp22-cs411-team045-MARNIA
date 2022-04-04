@@ -153,7 +153,8 @@ app.post('/listmovie', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
-        response.send('Got a POST request');
+        console.log('record inserted');
+        res.redirect('/');
     });
 });
 app.delete('/listmovie', (request, response) => {
