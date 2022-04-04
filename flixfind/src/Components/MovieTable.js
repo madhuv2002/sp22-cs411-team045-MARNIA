@@ -5,6 +5,7 @@ import { Rate } from 'antd';
 import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import FlixService from '../api';
+import { NULL } from 'mysql/lib/protocol/constants/types';
 
 
 const MovieTable = () => {
@@ -128,6 +129,7 @@ const MovieTable = () => {
     { label: '13+', value: '13+' },
     { label: '16+', value: '16+' },
     { label: '18+', value: '18+' },
+    { label: 'All', value: null },
   ];
 
   const AgeButtons = () => {
