@@ -5,8 +5,8 @@ import React from 'react';
 // import { Header, Table, Rating } from 'semantic-ui-react'
 // import 'semantic-ui-css/semantic.min.css'; 
 import '@ant-design/compatible/assets/index.css';
-
-import { Table, Tag, Space, Checkbox, Slider, Switch } from 'antd';
+import { Rate } from 'antd';
+import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 const columns = [
   {
@@ -29,6 +29,16 @@ const columns = [
     title: 'Year',
     dataIndex: 'year',
     key: 'year',
+  },
+  {
+    title: 'User Rating',
+    dataIndex: 'userRating',
+    key: 'userRating',
+    render: rating => {
+      return (
+        <Rate allowHalf defaultValue={0}>{rating}</Rate>
+      );
+    }
   },
   {
     title: 'Platforms',
@@ -80,6 +90,7 @@ const data = [
     score: 0,
     year: 'New York No. 1 Lake Park',
     platforms: ['Netflix', 'Hulu'],
+    userRating: 2.5,
   },
   {
     key: '2',
@@ -88,6 +99,7 @@ const data = [
     score: 0,
     year: 'London No. 1 Lake Park',
     platforms: ['Prime Video'],
+    userRating: 3,
   },
   {
     key: '3',
@@ -96,6 +108,7 @@ const data = [
     score: 0,
     year: 'Sidney No. 1 Lake Park',
     platforms: ['Disney+', 'Hulu'],
+    userRating: 2.5,
   },
 ];
 
@@ -117,15 +130,32 @@ const ageOptions = [
   { label: '18+', value: '18+' },
 ];
 
+const AgeButtons = () => {
+  const [value, setValue] = React.useState(1);
+
+  const onChange = e => {
+    console.log('radio checked', e.target.value);
+    setValue(e.target.value);
+  };
+
+  return (
+    <Radio.Group options={ageOptions} onChange={onChange} value={value}>
+      <Radio value={1}>A</Radio>
+      <Radio value={2}>B</Radio>
+      <Radio value={3}>C</Radio>
+      <Radio value={4}>D</Radio>
+    </Radio.Group>
+  );
+};
 
 function App() {
   return (
     <div className="App">
       <div className='Filters'>
-          <Checkbox.Group options={platformOptions} defaultValue={['Pear']} onChange={onChange} />
+          <Checkbox.Group options={platformOptions} onChange={onChange} />
           <br />
           <br />
-          <Checkbox.Group options={ageOptions} defaultValue={['Pear']} onChange={onChange} />
+          <AgeButtons></AgeButtons>
           <br />
           <Slider defaultValue={70} />
           <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
