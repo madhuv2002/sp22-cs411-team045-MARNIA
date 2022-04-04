@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import '@ant-design/compatible/assets/index.css';
 import { Rate } from 'antd';
 import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
@@ -149,14 +149,15 @@ const MovieTable = () => {
       </Radio.Group>
     );
   };
-  
-
+  const [movies, setMovies] = useState([])
   useEffect(() => {
-    console.log("HERE");
+    const populateMovies = [];
     const fetchMovies = async () => {
       const res = await FlixService.getAllMovies();
-    
-      console.log(res);
+      res.forEach(function(movie) {
+        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: ['Disney+', 'Hulu'], userRating: 2});
+      })
+      setMovies(populateMovies);
     };
 
     fetchMovies();
@@ -175,7 +176,7 @@ const MovieTable = () => {
         <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
     </div>
     <div className='movies-table'>
-    <Table columns={columns} dataSource={data} />    
+    <Table columns={columns} dataSource={movies} />    
     </div>
   </div>
   );
