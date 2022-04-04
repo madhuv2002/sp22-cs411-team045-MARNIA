@@ -76,6 +76,7 @@ app.get('/movies', (request, response) => {
 
 
     
+    sql += " ORDER BY m.Score desc"
     console.log(sql);
 
     connection.query(sql, (err, result) => {

@@ -16,7 +16,7 @@
 
 import axios from 'axios';
 
-const apiUri = 'http://35.224.49.56';
+const apiUri = 'http://localhost:80';
 
 const getAllMovies = async (params) => {
     const promise = axios.get(apiUri + '/movies', {
