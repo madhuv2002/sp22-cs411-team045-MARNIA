@@ -40,6 +40,8 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
+    console.log(netflix)
+    
     if (age_rating != null) {
         conditions.push(`(m.AgeRating == '${age_rating}')`);
     }
