@@ -28,11 +28,21 @@ const getAllMovies = async (params) => {
       });
 }
 
+const getPlatforms = async (params) => {
+  const promise = axios.get(apiUri + '/platforms', {
+      params: {movieId: params}
+  });
+  return await promise.then(response => response.data).then(
+    response => { 
+      return response; 
+    });
+}
+
 // const getCourseListMeta = () => {
 //     const promise = axios.get(`${apiUri}/2021-sp/summary`);
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies };
+const FlixService = { getAllMovies, getPlatforms };
 
 export default FlixService;

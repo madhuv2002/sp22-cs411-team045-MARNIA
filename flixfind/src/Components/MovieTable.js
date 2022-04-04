@@ -149,19 +149,47 @@ const MovieTable = () => {
       </Radio.Group>
     );
   };
-  const [movies, setMovies] = useState([])
+  const [movies, setMovies] = useState([]);
+  const [movieToPlatforms, setMoviesToPlatforms] = useState({});
+  
+  useEffect(() => {
+    const fetchPlatforms = async () => {
+      const platformRes = await FlixService.getPlatforms();
+      const mToP = new Map();
+      platformRes.forEach(async function(x) {
+        mToP[x.MovieId] = x.PlatformName;
+        // console.log(x);
+      })
+      setMoviesToPlatforms(mToP);
+    }
+    fetchPlatforms();
+  }, []);
+
   useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
-      const res = await FlixService.getAllMovies();
-      res.forEach(function(movie) {
-        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: ['Disney+', 'Hulu'], userRating: 2});
-      })
+      try {
+        const res = await FlixService.getAllMovies();
+      res.forEach(async function(movie) {
+        // const platformObjects = await FlixService.getPlatforms(movie.MovieId);
+        // const platforms = []
+        // platformObjects.forEach(function(p) {
+        //   platforms.push(p.PlatformName);
+        // })
+        // console.log(platforms);
+        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: movieToPlatforms[movie.MovieId], userRating: 2});
+      }) }
+      catch (e) {
+        console.log(e);
+      }
+      
+     
       setMovies(populateMovies);
     };
-
     fetchMovies();
-  }, []);
+  }, [movieToPlatforms]);
+
+
 
 
   return (
