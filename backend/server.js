@@ -4,6 +4,8 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var mysql = require('mysql2');
 const res = require('express/lib/response');
+const req = require('express/lib/request');
+const cors = require('cors');
 
 
 var connection = mysql.createConnection({
@@ -19,6 +21,7 @@ connection.connect(function(err) {
 });
 
 var app = express();
+app.use(cors());
 
 
 app.get('/', (request, response) => {
@@ -30,7 +33,8 @@ app.get('/movies', (request, response) => {
     var sql = "SELECT * FROM Movie m";
     var conditions = [];
     var age_rating = request.query.age_rating;
-    var year = request.query.year;
+    var min_year = request.query.min_year;
+    var max_year = request.query.max_year;
     var netflix = request.query.netflix;
     var hulu = request.query.hulu;
     var disneyplus = request.query.disneyplus;
@@ -39,8 +43,8 @@ app.get('/movies', (request, response) => {
     if (age_rating != null) {
         conditions.push(`(m.AgeRating == ${age_rating})`);
     }
-    if (year != null) {
-        conditions.push(`(m.Year == ${year})`);
+    if (min_year != null && max_year != null) {
+        conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
     }
     if (netflix) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a WHERE a.MovieId = m.MovieId and a.PlatformName = 'Netflix'))`);
