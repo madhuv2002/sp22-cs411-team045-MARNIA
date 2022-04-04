@@ -143,6 +143,7 @@ app.get('/movies', (request, response) => {
 app.get('/platforms', (request, response) => {
     var movieId = request.query.movieId;
     var sql = `SELECT a.PlatformName FROM MoviePlatformAssociation a WHERE a.MovieId = ${movieId}`;
+    console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
