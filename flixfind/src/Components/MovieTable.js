@@ -153,23 +153,28 @@ const MovieTable = () => {
 
   const [age, setAge] = useState();
   
-  const AgeButtons = () => {
-    const [value, setValue] = React.useState();
+  // const AgeButtons = () => {
+  //   const [value, setValue] = React.useState();
   
-    const onClick = e => {
-      setValue(e.target.value);
-      setAge(value);
-    };
+  //   const onClick = e => {
+  //     setValue(e.target.value);
+  //     setAge(value);
+  //   };
 
-    return (
-      <Radio.Group options={ageOptions} onClick={() => console.log("Should me logged")} value={value}>
-        <Radio.Button
-        onClick={() => console.log("Should be logged")}>
-      </Radio.Button>
-      </Radio.Group>
-    );
-  };
+  //   return (
+  //     <Radio.Group options={ageOptions} onClick={() => console.log("Should me logged")} value={value}>
+  //       <Radio.Button
+  //       onClick={() => console.log("Should be logged")}>
+  //     </Radio.Button>
+  //     </Radio.Group>
+  //   );
+  // };
   
+  function onChangeRadio(checkedValue) {
+    console.log(checkedValue.target.value);
+    setAge(checkedValue.target.value);
+  }
+
   useEffect(() => {
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
@@ -220,7 +225,7 @@ const MovieTable = () => {
 
         <br />
         <br />
-        <AgeButtons></AgeButtons>
+        <Radio.Group options={ageOptions} onChange={onChangeRadio} />
         <br />
         <Slider defaultValue={70} />
         <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
