@@ -122,11 +122,14 @@ app.post('/list', (request, response) => {
     } else {
         sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
     }
+    console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
-        response.send('Got a POST request');
+        console.log('record inserted');
+        res.redirect('/');
+    
     });
 
 });
