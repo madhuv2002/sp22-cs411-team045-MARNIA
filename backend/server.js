@@ -137,7 +137,12 @@ app.post('/list', (request, response) => {
 
 app.get('/listmovie', (request, response) => {
     var listId = request.query.listId;
-    var sql = `SELECT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+    if (listId == null) {
+        var sql = `SELECT * FROM MovieListMovieAssociation a`;
+    } else {
+        var sql = `SELECT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+    }
+    console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
@@ -148,13 +153,13 @@ app.get('/listmovie', (request, response) => {
 app.post('/listmovie', (request, response) => {
     var listId = request.query.listId;
     var movieId = request.query.movieId;
+    
     var sql = `INSERT INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
         console.log('record inserted');
-        res.redirect('/');
     });
 });
 app.delete('/listmovie', (request, response) => {
@@ -208,6 +213,7 @@ app.get('/platforms', (request, response) => {
 //         if (err) {
 //             response.status(400).send('Error in database operation');
 //         }
+//         console.log('record inserted');
 //         response.send('Got a POST request');
 //     });
 // });
