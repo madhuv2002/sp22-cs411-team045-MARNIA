@@ -82,39 +82,34 @@ const MovieTable = () => {
       ),
     },
   ];
-  
-  const data = [
-    {
-      key: '1',
-      title: 'John Brown',
-      ageRating: 32,
-      score: 0,
-      year: 'New York No. 1 Lake Park',
-      platforms: ['Netflix', 'Hulu'],
-      userRating: 2.5,
-    },
-    {
-      key: '2',
-      title: 'Jim Green',
-      ageRating: 42,
-      score: 0,
-      year: 'London No. 1 Lake Park',
-      platforms: ['Prime Video'],
-      userRating: 3,
-    },
-    {
-      key: '3',
-      title: 'Joe Black',
-      ageRating: 32,
-      score: 0,
-      year: 'Sidney No. 1 Lake Park',
-      platforms: ['Disney+', 'Hulu'],
-      userRating: 2.5,
-    },
-  ];
-  
+
+  // const [filter, setFilters] = useState({age_rating: null, min_year: null, max_year: null, netflix:0, hulu: 0, disneyplus: 0, primevideo: 0, score: null});
+  const [netflix, setNetflix] = useState();
+  const [hulu, setHulu] = useState();
+  const [prime, setPrime] = useState();
+  const [disney, setDisney] = useState();
+  const [movies, setMovies] = useState([]);
+  const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   function onChange(checkedValues) {
-    console.log('checked = ', checkedValues);
+    console.log("ON CHANGE");
+    if (checkedValues.includes('Netflix')) {
+      setNetflix(1);
+    } else {
+      setNetflix(0);
+    }
+    if (checkedValues.includes('Hulu')) {
+    } else {
+    }
+    if (checkedValues.includes('Prime Video')) {
+
+    } else {
+     
+    }
+    if (checkedValues.includes('Disney+')) {
+
+    } else {
+  
+    }
   }
   
   const platformOptions = [
@@ -136,8 +131,19 @@ const MovieTable = () => {
     const [value, setValue] = React.useState(1);
   
     const onChange = e => {
-      console.log('radio checked', e.target.value);
       setValue(e.target.value);
+      if (e.target.value === ('7+')) {
+       
+      } else if (e.target.value === ('13+')) {
+      
+      }  else if (e.target.value === ('16+')) {
+       
+      }  else if (e.target.value === ('18+')) {
+   
+     
+      } else {
+  
+      }
     };
   
     return (
@@ -149,11 +155,8 @@ const MovieTable = () => {
       </Radio.Group>
     );
   };
-  const [movies, setMovies] = useState([]);
-  const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   
   useEffect(() => {
-    console.log("fetching platforms");
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
       const mToP = new Map();
@@ -169,11 +172,13 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
-    console.log("fetch movies");
+    console.log("movies useeffect");
     const populateMovies = [];
     const fetchMovies = async () => {
+    var filters = {age_rating: null, min_year: null, max_year: null, netflix:netflix, hulu: 0, disneyplus: 0, primevideo: 0, score: null};
+
       try {
-        const res = await FlixService.getAllMovies();
+        const res = await FlixService.getAllMovies(filters);
       res.forEach(async function(movie) {
         // const platformObjects = await FlixService.getPlatforms(movie.MovieId);
         // const platforms = []
@@ -192,7 +197,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms]);
+  }, [movieToPlatforms, netflix]);
 
 
 
