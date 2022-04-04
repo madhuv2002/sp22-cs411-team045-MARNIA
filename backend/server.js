@@ -109,7 +109,7 @@ app.get('/movies', (request, response) => {
 // app.post('/list', (request, response) => {
 //     var blackList = request.query.blackList;
 //     var listId = request.query.listId;
-//     var userId = request.query.UserId;
+//     var userId = request.query.userId;
 //     var sql;
 //     if (blackList) {
 //         sql = `INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}); INSERT INTO MovieList(ListId) VALUES (${listId})`;
@@ -178,11 +178,11 @@ app.get('/platforms', (request, response) => {
 
 // app.post('/ratings', (request, response) => {
 //     var userId = request.query.userId;
-// 	var movieId = request.query.movieId;
+// 	   var movieId = request.query.movieId;
 //     var dateTime = request.query.dateTime;
 //     var ratingScore = request.query.ratingScore;
 	
-// 	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore})`;
+// 	   var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore})`;
 //     connection.query(sql, (err, result) => {
 //         if (err) {
 //             response.status(400).send('Error in database operation');
@@ -193,7 +193,7 @@ app.get('/platforms', (request, response) => {
 
 // app.put('/ratings', (request, response) => {
 //     var movieId = request.query.movieId;
-//     var userId = request.query.UserId;
+//     var userId = request.query.userId;
 //     var updatedRating = request.query.updatedRating;
 //     var sql = `UPDATE Rating r SET r.Score = ${updatedRating} WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
 //     connection.query(sql, (err, result) => {
@@ -203,6 +203,19 @@ app.get('/platforms', (request, response) => {
 //         response.send('Got a PUT request');
 //     });
 // });
+
+// app.delete('/ratings', (request, response) => {
+//    var movieId = request.query.movieId;
+//    var userId = request.query.userId;
+//    var sql = `DELETE FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
+//    connection.query(sql, (err, result) => {
+//        if (err) {
+//            response.status(400).send('Error in database operation');
+//        }
+//        response.send('Got a DELETE request at /ratings');
+//    });
+// });
+
 app.listen(80, function () {
     console.log('Node app is running on port 80');
 });
@@ -217,6 +230,6 @@ app.listen(80, function () {
 //        if (err) {
 //            response.status(400).send('Error in database operation');
 //        }
-//        response.send('Got a DELETE request at/listmovie');
+//        response.send('Got a DELETE request at /listmovie');
 //    });
 // });
