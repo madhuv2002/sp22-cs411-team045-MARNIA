@@ -175,6 +175,31 @@ const MovieTable = () => {
     setAge(checkedValue.target.value);
   }
 
+  
+  const [score, setScore] = useState();
+  function onChangeScore(value) {
+    console.log('onChange: ', value);
+    setScore(value);
+  }
+
+  function onAfterChangeScore(value) {
+    console.log('onAfterChange: ', value);
+    
+  }
+
+  const [minYear, setMinYear] = useState();
+  const [maxYear, setMaxYear] = useState();
+  function onChangeYear(value) {
+    console.log('onChange: ', value[1]);
+    setMinYear(value[0]);
+    setMaxYear(value[1]);
+  }
+  function onAfterChangeYear(value) {
+    console.log('onAfterChange: ', value);
+    
+  }
+  
+
   useEffect(() => {
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
@@ -193,7 +218,7 @@ const MovieTable = () => {
   useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
-    var filters = {age_rating:age, min_year: null, max_year: null, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score: null, search: search};
+    var filters = {age_rating:age, min_year:minYear, max_year: maxYear, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score:score, search: search};
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -215,7 +240,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search]);
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear]);
 
 
   return (
@@ -227,8 +252,14 @@ const MovieTable = () => {
         <br />
         <Radio.Group options={ageOptions} onChange={onChangeRadio} />
         <br />
-        <Slider defaultValue={70} />
-        <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
+        <Slider defaultValue={30} onChange={onChangeScore} onAfterChange={onAfterChangeScore} />
+        <Slider
+          min={1960} max={2022}
+          range
+          defaultValue={[2000, 2010]}
+          onChange={onChangeYear}
+          onAfterChange={onAfterChangeYear}
+        />
     </div>
     <div>
     <Search placeholder="input search text" onSearch={onSearch} enterButton />
