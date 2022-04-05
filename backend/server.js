@@ -228,7 +228,12 @@ app.get('/platforms', (request, response) => {
 app.get('/ratings', (request, response) => {
 	var userId = request.query.userId;
 	
-	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
+    if (userId == NULL) {
+        var sql = `SELECT * FROM Rating r`;
+    } else {
+        var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
+    }   
+	
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
