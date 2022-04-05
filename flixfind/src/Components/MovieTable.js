@@ -22,7 +22,7 @@ const MovieTable = () => {
     FlixService.removeFromWatchList(e);
   }
 
-  const [rating, setRating] = useState();
+  // const [rating, setRating] = useState();
   
   // const updateRating = (e) => {
   // }
@@ -55,7 +55,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {
         return (
-          <div className='rating'><Rate defaultValue={rating} onChange={onChangeRating}>{rating}</Rate> </div>
+          <div className='rating'><Rate defaultValue={rating}>{rating}</Rate> </div>
         );
       }
     },
@@ -231,10 +231,10 @@ const MovieTable = () => {
 
   }
 
-  function onChangeRating(checkedValue) {
-    setRating(checkedValue);
-    // console.log(checkedValue);
-  }
+  // function onChangeRating(checkedValue) {
+  //   setRating(checkedValue);
+  //   // console.log(checkedValue);
+  // }
 
 
   useEffect(() => {
