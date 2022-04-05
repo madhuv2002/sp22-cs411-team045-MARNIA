@@ -118,9 +118,9 @@ app.post('/list', (request, response) => {
     var userId = request.query.UserId;
     var sql;
     if (blackList) {
-        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
+        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
     } else {
-        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
+        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
     }
     console.log(sql);
     connection.query(sql, (err, result) => {
@@ -138,9 +138,9 @@ app.post('/list', (request, response) => {
 app.get('/listmovie', (request, response) => {
     var listId = request.query.listId;
     if (listId == null) {
-        var sql = `SELECT * FROM MovieListMovieAssociation a`;
+        var sql = `SELECT DISTINCT * FROM MovieListMovieAssociation a`;
     } else {
-        var sql = `SELECT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+        var sql = `SELECT DISTINCT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
     }
     console.log(sql);
     connection.query(sql, (err, result) => {
@@ -154,7 +154,7 @@ app.post('/listmovie', (request, response) => {
     var listId = request.query.listId;
     var movieId = request.query.movieId;
     
-    var sql = `INSERT INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
+    var sql = `INSERT IGNORE INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
