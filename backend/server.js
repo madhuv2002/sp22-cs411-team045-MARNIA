@@ -34,6 +34,7 @@ app.get('/', (request, response) => {
 )
 
 app.get('/movies', (request, response) => {
+    var acclaimed = request.query.acclaimed;
     if (acclaimed == 1) {
         var sql = "SELECT AVG(m.score) FROM Movie m";
     } else {
@@ -50,7 +51,7 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
-    var acclaimed = request.query.acclaimed;
+    
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
