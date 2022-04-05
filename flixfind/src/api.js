@@ -69,7 +69,9 @@ return await promise.then(response => response.data).then(
   });
 }
 
-const getRatings = async () => {
+const getRatings = async (params) => {
+
+  console.log("Fetch ratings")
   const promise = axios.get(apiUri + '/ratings', {
       params: params
   });
@@ -80,9 +82,9 @@ const getRatings = async () => {
     });
 }
 
-const addRating = async () => {
+const addRating = async (params) => {
   const promise = axios.post(apiUri + '/ratings', {
-    userId: params.userId, movieId: params.movieId, dateTime: NULL, ratingScore: params.ratingScore
+    userId: params.userId, movieId: params.movieId, dateTime: null, ratingScore: params.ratingScore
   });
   return await promise.then(response => response.data).then(
     response => { 

@@ -233,6 +233,7 @@ app.get('/ratings', (request, response) => {
     } else {
         var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
     }   
+    console.log(sql)
 	
     connection.query(sql, (err, result) => {
         if (err) {
@@ -251,6 +252,7 @@ app.post('/ratings', (request, response) => {
 	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore}) 
                 ON DUPLICATE KEY UPDATE Score = VALUES (Score)`;
 
+    console.log(sql)
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
