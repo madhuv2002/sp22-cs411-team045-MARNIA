@@ -1,4 +1,4 @@
-var createError = require('http-errors');
+d var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -34,7 +34,12 @@ app.get('/', (request, response) => {
 )
 
 app.get('/movies', (request, response) => {
-    var sql = "SELECT * FROM Movie m";
+    if (acclaimed == 1) {
+        var sql = "SELECT AVG(m.score) FROM Movie m";
+    } else {
+        var sql = "SELECT * FROM Movie m";
+    }
+    
     var conditions = [];
     var search = request.query.search;
     var age_rating = request.query.age_rating;
@@ -45,6 +50,7 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
+    var acclaimed = request.query.score;
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
@@ -80,6 +86,9 @@ app.get('/movies', (request, response) => {
         if (i != conditions.length - 1) {
             sql += "AND ";
         }
+    }
+    if (acclaimed == 1) {
+        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + sql + ")"
     }
 
 
