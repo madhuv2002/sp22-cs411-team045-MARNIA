@@ -106,6 +106,6 @@ return await promise.then(response => response.data).then(
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, updateRating};
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList};
 
 export default FlixService;
