@@ -225,33 +225,35 @@ app.get('/platforms', (request, response) => {
     
 });
 
-// app.get('/ratings', (request, response) => {
-// 	var userId = request.query.userId;
+app.get('/ratings', (request, response) => {
+	var userId = request.query.userId;
 	
-// 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send(result);
-//     });
-// });
+	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+});
 
-// app.post('/ratings', (request, response) => {
-//     var userId = request.body.userId;
-// 	   var movieId = request.body.movieId;
-//     var dateTime = request.body.dateTime;
-//     var ratingScore = request.body.ratingScore;
+app.post('/ratings', (request, response) => {
+    var userId = request.body.userId;
+	var movieId = request.body.movieId;
+    var dateTime = request.body.dateTime;
+    var ratingScore = request.body.ratingScore;
 	
-// 	   var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore})`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         console.log('record inserted');
-//         response.send('Got a POST request');
-//     });
-// });
+	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore}) 
+                ON DUPLICATE KEY UPDATE Score = VALUES (Score)`;
+
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        console.log('record inserted');
+        response.send('Got a POST request');
+    });
+});
 
 // app.put('/ratings', (request, response) => {
 //     var movieId = request.body.movieId;
@@ -266,17 +268,17 @@ app.get('/platforms', (request, response) => {
 //     });
 // });
 
-// app.delete('/ratings', (request, response) => {
-//    var movieId = request.body.movieId;
-//    var userId = request.body.userId;
-//    var sql = `DELETE FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
-//    connection.query(sql, (err, result) => {
-//        if (err) {
-//            response.status(400).send('Error in database operation');
-//        }
-//        response.send('Got a DELETE request at /ratings');
-//    });
-// });
+app.delete('/ratings', (request, response) => {
+   var movieId = request.body.movieId;
+   var userId = request.body.userId;
+   var sql = `DELETE FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
+   connection.query(sql, (err, result) => {
+       if (err) {
+           response.status(400).send('Error in database operation');
+       }
+       response.send('Got a DELETE request at /ratings');
+   });
+});
 
 app.listen(80, function () {
     console.log('Node app is running on port 80');
