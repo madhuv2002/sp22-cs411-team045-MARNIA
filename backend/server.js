@@ -35,11 +35,17 @@ app.get('/', (request, response) => {
 
 app.get('/movies', (request, response) => {
     var acclaimed = request.query.acclaimed;
-    
+    var userId = request.query.userId;
     if (acclaimed == 1) {
         var avgsql = "SELECT AVG(m.score) FROM Movie m";
     } 
-    var sql = "SELECT * FROM Movie m";
+    if (userId != null) {
+        var sql = `SELECT * FROM Movie m Left Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings on m.MovieId = ratings.MovieId `;
+    } else {
+        var sql = `SELECT * FROM Movie m `
+    }
+
+    
     
     var conditions = [];
     var subconditions = [];
