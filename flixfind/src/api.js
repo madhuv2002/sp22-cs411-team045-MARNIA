@@ -58,6 +58,15 @@ return await promise.then(response => response.data).then(
     return response; 
   });
 }
+const deleteFromWatchList = async (params) => {
+  const promise = axios.delete(apiUri + '/listmovie', {
+    listId: 1, movieId: params
+});
+return await promise.then(response => response.data).then(
+  response => { 
+    return response; 
+  });
+}
 
 
 

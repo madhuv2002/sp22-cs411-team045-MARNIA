@@ -17,7 +17,7 @@ const MovieTable = () => {
 
 
   const removeFromWatchList = (e) => {
-    console.log(e);
+    FlixService.removeFromWatchList(e);
   }
 
   const columns = [

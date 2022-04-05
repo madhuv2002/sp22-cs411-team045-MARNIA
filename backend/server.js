@@ -140,7 +140,8 @@ app.post('/list', (request, response) => {
 
 
 app.get('/listmovie', (request, response) => {
-    var listId = request.body.listId;
+    var listId = request.query.listId;
+    console.log(listId);
     if (listId == null) {
         var sql = `SELECT DISTINCT * FROM MovieListMovieAssociation a`;
     } else {
@@ -158,8 +159,6 @@ app.get('/listmovie', (request, response) => {
 app.post('/listmovie', (request, response) => {
     var listId = request.body.listId;
     var movieId = request.body.movieId;
-    console.log(listId);
-    console.log(movieId);
     var sql = `INSERT IGNORE INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
     console.log(sql);
     connection.query(sql, (err, result) => {
@@ -170,7 +169,6 @@ app.post('/listmovie', (request, response) => {
     });
 });
 app.delete('/listmovie', (request, response) => {
-   var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
    var listId = request.body.listId;
    var movieId = request.body.movieId;
     console.log(listId);
