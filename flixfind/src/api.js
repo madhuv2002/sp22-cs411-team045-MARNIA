@@ -38,7 +38,7 @@ const getPlatforms = async (params) => {
     });
 }
 
-const getWatchList = async (params) => {
+const getWatchList = async () => {
   const promise = axios.get(apiUri + '/listmovie', {
       params: {listId: 1}
   });

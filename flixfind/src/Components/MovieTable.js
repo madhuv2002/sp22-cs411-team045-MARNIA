@@ -55,7 +55,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {
         return (
-          <div className='rating'><Rate defaultValue={null} onChange={onChangeRating}>{rating}</Rate> </div>
+          <div className='rating'><Rate defaultValue={rating} onChange={onChangeRating}>{rating}</Rate> </div>
         );
       }
     },
@@ -257,8 +257,8 @@ const MovieTable = () => {
       const ratingRes = await FlixService.getRatings();
       const mToR = new Map();
       ratingRes.forEach(async function (x) {
-        console.log(x)
-        mToR[x.movieId] = x.userRating;
+        // console.log(x.Score)
+        mToR[x.movieId] = x.Score;
       })
       setMovieRatings(mToR);
     }
@@ -298,6 +298,7 @@ const MovieTable = () => {
             platforms = []
           }
           var rating = movieRatings[movie.MovieId];
+          
           if (rating == null) {
             rating = 0;
           }
