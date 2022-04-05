@@ -226,10 +226,9 @@ app.get('/platforms', (request, response) => {
 });
 
 // app.get('/ratings', (request, response) => {
-// 	var movieId = request.query.movieId;
 // 	var userId = request.query.userId;
 	
-// 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
+// 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
 //     connection.query(sql, (err, result) => {
 //         if (err) {
 //             response.status(400).send('Error in database operation');

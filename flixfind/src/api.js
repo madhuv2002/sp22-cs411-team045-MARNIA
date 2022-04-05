@@ -68,6 +68,28 @@ return await promise.then(response => response.data).then(
   });
 }
 
+const getRatings = async () => {
+  const promise = axios.get(apiUri + '/ratings', {
+      params: {userId: 1}
+  });
+  return await promise.then(response => response.data).then(
+    response => { 
+      console.log(response);
+      return response; 
+    });
+}
+
+const addRating = async () => {
+  const promise = axios.post(apiUri + '/ratings', {
+    userId: 1, movieId: params.movieId, dateTime: NULL, ratingScore: params.ratingScore
+  });
+  return await promise.then(response => response.data).then(
+    response => { 
+      return response; 
+    });
+}
+
+
 
 
 // const getCourseListMeta = () => {
@@ -75,6 +97,6 @@ return await promise.then(response => response.data).then(
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList};
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating};
 
 export default FlixService;
