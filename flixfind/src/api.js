@@ -50,6 +50,7 @@ const getWatchList = async () => {
 }
 
 const addToWatchList = async (params) => {
+  console.log("ADD IN API");
   const promise = axios.post(apiUri + '/listmovie', {
     listId: 1, movieId: params
 });

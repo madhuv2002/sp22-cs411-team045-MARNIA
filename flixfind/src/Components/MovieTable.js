@@ -14,11 +14,13 @@ import './Style.css';
 const MovieTable = () => {
 
   const addToWatchList = (e) => {
+    console.log("ADD TO WATCH LIST");
     FlixService.addToWatchList(e);
   }
 
 
   const removeFromWatchList = (e) => {
+    console.log("Remove from watchlist");
     FlixService.removeFromWatchList(e);
   }
 
