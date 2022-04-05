@@ -228,7 +228,7 @@ app.get('/platforms', (request, response) => {
 app.get('/ratings', (request, response) => {
 	var userId = request.query.userId;
 	
-    if (userId == NULL) {
+    if (userId == null) {
         var sql = `SELECT * FROM Rating r`;
     } else {
         var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId}`;
