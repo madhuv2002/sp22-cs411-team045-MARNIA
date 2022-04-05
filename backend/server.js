@@ -255,7 +255,7 @@ app.post('/ratings', (request, response) => {
     var dateTime = request.body.dateTime;
     var ratingScore = request.body.ratingScore;
 	
-	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore}) 
+	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, NULL, ${ratingScore}) 
                 ON DUPLICATE KEY UPDATE Score = VALUES (Score)`;
 
     console.log(sql)

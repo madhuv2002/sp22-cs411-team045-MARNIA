@@ -84,7 +84,7 @@ const getRatings = async (params) => {
 
 const addRating = async (params) => {
   const promise = axios.post(apiUri + '/ratings', {
-    userId: params.userId, movieId: params.movieId, dateTime: null, ratingScore: params.ratingScore
+    userId: params.userId, movieId: params.movieId, ratingScore: params.ratingScore
   });
   return await promise.then(response => response.data).then(
     response => { 
