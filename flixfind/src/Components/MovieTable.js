@@ -50,7 +50,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {
         return (
-          <Rate allowHalf defaultValue={0}>{rating}</Rate>
+          <div className='rating'><Rate allowHalf defaultValue={0}>{rating}</Rate> </div>
         );
       }
     },
@@ -155,6 +155,22 @@ const MovieTable = () => {
     { label: 'Prime Video', value: 'Prime Video' },
   ];
 
+  const acclaimed = [
+    { label: 'Yes', value: 'Yes' },
+  ];
+
+  const [acclaim, setAcclaimed] = useState();
+  function onChangeAcclaimed(checkedValues) {
+    if (checkedValues.includes('Yes')) {
+      setAcclaimed(1);
+      console.log("Acclaimed");
+    } else {
+      setAcclaimed(0);
+      console.log("Not Acclaimed");
+    }
+  }
+
+
   const ageOptions = [
     { label: '7+', value: '7+' },
     { label: '13+', value: '13+' },
@@ -244,7 +260,7 @@ const MovieTable = () => {
   useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
-      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search };
+      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search, acclaimed:acclaim };
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -267,7 +283,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear]);
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear, acclaim]);
 
 
   return (
@@ -309,6 +325,8 @@ const MovieTable = () => {
             <p>Year Released</p>
             <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} onChange={onChangeYear}
               onAfterChange={onAfterChangeYear} />
+            <p>Acclaimed</p>
+            <Checkbox.Group options={acclaimed} onChange={onChangeAcclaimed} />
           </div>
           </Card>
         </Col>
