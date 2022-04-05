@@ -32,15 +32,15 @@ app.get('/', (request, response) => {
 app.get('/movies', (request, response) => {
     var sql = "SELECT * FROM Movie m";
     var conditions = [];
-    var search = request.query.search;
-    var age_rating = request.query.age_rating;
-    var min_year = request.query.min_year;
-    var max_year = request.query.max_year;
-    var netflix = request.query.netflix;
-    var hulu = request.query.hulu;
-    var disneyplus = request.query.disneyplus;
-    var primevideo = request.query.primevideo;
-    var score = request.query.score;
+    var search = request.body.search;
+    var age_rating = request.body.age_rating;
+    var min_year = request.body.min_year;
+    var max_year = request.body.max_year;
+    var netflix = request.body.netflix;
+    var hulu = request.body.hulu;
+    var disneyplus = request.body.disneyplus;
+    var primevideo = request.body.primevideo;
+    var score = request.body.score;
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
@@ -92,8 +92,8 @@ app.get('/movies', (request, response) => {
 });
 
 app.get('/list', (request, response) => {
-    var blackList = request.query.blackList;
-    var listId = request.query.listId;
+    var blackList = request.body.blackList;
+    var listId = request.body.listId;
     var sql;
     if (listId == null) {
         sql = `SELECT * FROM MovieList m`
@@ -113,9 +113,9 @@ app.get('/list', (request, response) => {
     });
 });
 app.post('/list', (request, response) => {
-    var blackList = request.query.blackList;
-    var listId = request.query.listId;
-    var userId = request.query.UserId;
+    var blackList = request.body.blackList;
+    var listId = request.body.listId;
+    var userId = request.body.UserId;
     var sql;
     if (blackList) {
         sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
@@ -136,7 +136,7 @@ app.post('/list', (request, response) => {
 
 
 app.get('/listmovie', (request, response) => {
-    var listId = request.query.listId;
+    var listId = request.body.listId;
     if (listId == null) {
         var sql = `SELECT DISTINCT * FROM MovieListMovieAssociation a`;
     } else {
@@ -151,8 +151,8 @@ app.get('/listmovie', (request, response) => {
     });
 });
 app.post('/listmovie', (request, response) => {
-    var listId = request.query.listId;
-    var movieId = request.query.movieId;
+    var listId = request.body.listId;
+    var movieId = request.body.movieId;
     
     var sql = `INSERT IGNORE INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
     connection.query(sql, (err, result) => {
@@ -163,8 +163,8 @@ app.post('/listmovie', (request, response) => {
     });
 });
 app.delete('/listmovie', (request, response) => {
-   var listId = request.query.listId;
-   var movieId = request.query.movieId;
+   var listId = request.body.listId;
+   var movieId = request.body.movieId;
    var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
    connection.query(sql, (err, result) => {
        if (err) {
@@ -190,8 +190,8 @@ app.get('/platforms', (request, response) => {
 });
 
 // app.get('/ratings', (request, response) => {
-// 	var movieId = request.query.movieId;
-// 	var userId = request.query.userId;
+// 	var movieId = request.body.movieId;
+// 	var userId = request.body.userId;
 	
 // 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
 //     connection.query(sql, (err, result) => {
@@ -203,10 +203,10 @@ app.get('/platforms', (request, response) => {
 // });
 
 // app.post('/ratings', (request, response) => {
-//     var userId = request.query.userId;
-// 	   var movieId = request.query.movieId;
-//     var dateTime = request.query.dateTime;
-//     var ratingScore = request.query.ratingScore;
+//     var userId = request.body.userId;
+// 	   var movieId = request.body.movieId;
+//     var dateTime = request.body.dateTime;
+//     var ratingScore = request.body.ratingScore;
 	
 // 	   var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore})`;
 //     connection.query(sql, (err, result) => {
@@ -219,9 +219,9 @@ app.get('/platforms', (request, response) => {
 // });
 
 // app.put('/ratings', (request, response) => {
-//     var movieId = request.query.movieId;
-//     var userId = request.query.userId;
-//     var updatedRating = request.query.updatedRating;
+//     var movieId = request.body.movieId;
+//     var userId = request.body.userId;
+//     var updatedRating = request.body.updatedRating;
 //     var sql = `UPDATE Rating r SET r.Score = ${updatedRating} WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
 //     connection.query(sql, (err, result) => {
 //         if (err) {
@@ -232,8 +232,8 @@ app.get('/platforms', (request, response) => {
 // });
 
 // app.delete('/ratings', (request, response) => {
-//    var movieId = request.query.movieId;
-//    var userId = request.query.userId;
+//    var movieId = request.body.movieId;
+//    var userId = request.body.userId;
 //    var sql = `DELETE FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
 //    connection.query(sql, (err, result) => {
 //        if (err) {
