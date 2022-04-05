@@ -89,6 +89,15 @@ const addRating = async () => {
     });
 }
 
+const updateRating = async () => {
+  const promise = axios.put(apiUri + '/ratings', {
+    userId: 1, movieId: params.movieId, updatedRating: params.updatedRating
+  });
+  return await promise.then(response => response.data).then(
+    response => { 
+      return response; 
+    });
+}
 
 
 
@@ -97,6 +106,6 @@ const addRating = async () => {
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating};
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, updateRating};
 
 export default FlixService;
