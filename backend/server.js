@@ -36,15 +36,15 @@ app.get('/', (request, response) => {
 app.get('/movies', (request, response) => {
     var sql = "SELECT * FROM Movie m";
     var conditions = [];
-    var search = request.body.search;
-    var age_rating = request.body.age_rating;
-    var min_year = request.body.min_year;
-    var max_year = request.body.max_year;
-    var netflix = request.body.netflix;
-    var hulu = request.body.hulu;
-    var disneyplus = request.body.disneyplus;
-    var primevideo = request.body.primevideo;
-    var score = request.body.score;
+    var search = request.query.search;
+    var age_rating = request.query.age_rating;
+    var min_year = request.query.min_year;
+    var max_year = request.query.max_year;
+    var netflix = request.query.netflix;
+    var hulu = request.query.hulu;
+    var disneyplus = request.query.disneyplus;
+    var primevideo = request.query.primevideo;
+    var score = request.query.score;
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
@@ -96,8 +96,8 @@ app.get('/movies', (request, response) => {
 });
 
 app.get('/list', (request, response) => {
-    var blackList = request.body.blackList;
-    var listId = request.body.listId;
+    var blackList = request.query.blackList;
+    var listId = request.query.listId;
     var sql;
     if (listId == null) {
         sql = `SELECT * FROM MovieList m`
@@ -197,8 +197,8 @@ app.get('/platforms', (request, response) => {
 });
 
 // app.get('/ratings', (request, response) => {
-// 	var movieId = request.body.movieId;
-// 	var userId = request.body.userId;
+// 	var movieId = request.query.movieId;
+// 	var userId = request.query.userId;
 	
 // 	var sql = `SELECT * FROM Rating r WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
 //     connection.query(sql, (err, result) => {
