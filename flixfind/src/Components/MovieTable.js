@@ -50,7 +50,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {
         return (
-          <div className='rating'><Rate allowHalf defaultValue={0}>{rating}</Rate> </div>
+          <div className='rating'><Rate allowHalf defaultValue={0} onChange={onChangeRating}>{rating}</Rate> </div>
         );
       }
     },
@@ -226,6 +226,13 @@ const MovieTable = () => {
   function onAfterChangeYear(value) {
     console.log('onAfterChange: ', value);
 
+  }
+
+
+  const [rating, setRating] = useState();
+  function onChangeRating(checkedValue) {
+    setRating(checkedValue);
+    console.log(checkedValue);
   }
 
 
