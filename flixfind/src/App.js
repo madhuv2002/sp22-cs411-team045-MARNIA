@@ -6,10 +6,11 @@ import React, { useEffect } from 'react';
 // import 'semantic-ui-css/semantic.min.css'; 
 import '@ant-design/compatible/assets/index.css';
 import { Rate } from 'antd';
-import { Table, Tag, Space, Checkbox, Slider, Radio } from 'antd';
+import { Table, Tag, Space, Checkbox, Slider, Radio, Typography } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import axios from 'axios'
 import MovieTable from './Components/MovieTable';
+const { Text, Link, Title } = Typography;
 
 // useEffect(() => {
 //   const fetchMovies = async () => {
@@ -162,19 +163,10 @@ import MovieTable from './Components/MovieTable';
 function App() {
   return (
     <div className="App">
-      <MovieTable></MovieTable>
-      {/* <div className='Filters'>
-          <Checkbox.Group options={platformOptions} onChange={onChange} />
-          <br />
-          <br />
-          <AgeButtons></AgeButtons>
-          <br />
-          <Slider defaultValue={70} />
-          <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} />
+      <div className="Title">
+      <Title strong justifyContent>FlixFind+</Title>
       </div>
-      <div className='movies-table'>
-      <Table columns={columns} dataSource={data} />    
-      </div>  */}
+      <MovieTable></MovieTable>
     </div>
   );
 }

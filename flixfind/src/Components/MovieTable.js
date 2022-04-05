@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import '@ant-design/compatible/assets/index.css';
 import { Rate, Input, Space } from 'antd';
 import { Table, Tag, Checkbox, Slider, Radio } from 'antd';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Card } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import FlixService from '../api';
 import { NULL } from 'mysql/lib/protocol/constants/types';
@@ -269,38 +269,49 @@ const MovieTable = () => {
 
   return (
     <div className="App">
-    <div className='Filters'>
-        <Checkbox.Group options={platformOptions} onChange={onChange} />
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+      <Card size="small">
+      <div>
+        <Search placeholder="input search text" onSearch={onSearch} enterButton />
+      </div>
+      </Card>
+      </Space>
+       <div className="container">
+        <div className="all-filters">
+          <Space size={'large'} align="center">
+            <div className='Filters'>
+              <p>Streaming Platform</p>
+              <Checkbox.Group options={platformOptions} onChange={onChange} />
+              <br />
+              <br />
+              <p>Age Rating</p>
+              <Radio.Group options={ageOptions} onChange={onChangeRadio} />
+              <br />
+              <br />
+              <p>Score</p>
+              <Slider defaultValue={30} onChange={onChangeScore} onAfterChange={onAfterChangeScore} />
+              <br />
+              <p>Year Released</p>
+              <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} onChange={onChangeYear}
+                onAfterChange={onAfterChangeYear} />
+            </div>
 
-        <br />
-        <br />
-        <Radio.Group options={ageOptions} onChange={onChangeRadio} />
-        <br />
-        <Slider defaultValue={30} onChange={onChangeScore} onAfterChange={onAfterChangeScore} />
-        <Slider
-          min={1960} max={2022}
-          range
-          defaultValue={[2000, 2010]}
-          onChange={onChangeYear}
-          onAfterChange={onAfterChangeYear}
-        />
-    </div>
-    <div>
-    <Search placeholder="input search text" onSearch={onSearch} enterButton />
-    </div>
-    <div>
-    <Button type="primary" onClick={showModal}>
-        View WatchList
-      </Button>
-    </div>
-    <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-      {watchList.map((movie) => (
-        <p>{movie}</p>
-      ))}
-      </Modal>
-    <div className='movies-table'>
-    <Table columns={columns} dataSource={movies} />    
-    </div>
+          <span className="modal-table">
+            <div className='movies-table'>
+              <Button type="primary" onClick={showModal}>
+                View WatchList
+              </Button>
+              <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                {watchList.map((movie) => (
+                  <p>{movie}</p>
+                ))}
+                </Modal>
+              <Table columns={columns} dataSource={movies} />    
+              </div>
+            </span>
+          </Space>
+        </div>
+      </div>
   </div>
   );
 }
