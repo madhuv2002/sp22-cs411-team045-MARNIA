@@ -1,4 +1,4 @@
-d var createError = require('http-errors');
+var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -35,11 +35,11 @@ app.get('/', (request, response) => {
 
 app.get('/movies', (request, response) => {
     var acclaimed = request.query.acclaimed;
+    
     if (acclaimed == 1) {
-        var sql = "SELECT AVG(m.score) FROM Movie m";
-    } else {
-        var sql = "SELECT * FROM Movie m";
-    }
+        var avgsql = "SELECT AVG(m.score) FROM Movie m";
+    } 
+    var sql = "SELECT * FROM Movie m";
     
     var conditions = [];
     var search = request.query.search;
@@ -77,21 +77,20 @@ app.get('/movies', (request, response) => {
         conditions.push(`(m.Score >= ${score})`);
     }
 
-    var filtersql = "";
     for (let i = 0; i < conditions.length; i++) {
         if (i == 0) {
-            filtersql = " WHERE ";
+            avgsql = " WHERE ";
             sql += " WHERE ";
         }
-        filtersql = conditions[i] + " ";
+        avgsql = conditions[i] + " ";
         sql += conditions[i] + " ";
         if (i != conditions.length - 1) {
-            filtersql += " AND "
+            avgsql = " WHERE ";
             sql += "AND ";
         }
     }
     if (acclaimed == 1) {
-        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + sql + ")" + " AND " + "m1 IN (" + sql + ")"
+        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + avgsql + ")" + " AND " + "m1 IN (" + sql + ")"
         sql += " ORDER BY m1.Score desc"
     } else {
         sql += " ORDER BY m.Score desc"
