@@ -42,6 +42,7 @@ app.get('/movies', (request, response) => {
     var sql = "SELECT * FROM Movie m";
     
     var conditions = [];
+    var subconditions = [];
     var search = request.query.search;
     var age_rating = request.query.age_rating;
     var min_year = request.query.min_year;
@@ -51,46 +52,60 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
+
     
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
+        subconditions.push(`(m1.Title LIKE '${search}%')`)
     }
     if (age_rating != null) {
         conditions.push(`(m.AgeRating = '${age_rating}')`);
+        subconditions.push(`(m1.AgeRating = '${age_rating}')`);
     }
     if (min_year != null && max_year != null) {
         conditions.push(`(m.Year >= ${min_year}) AND (m.Year <= ${max_year})`);
+        subconditions.push(`(m1.Year >= ${min_year}) AND (m1.Year <= ${max_year})`);
     }
     if (netflix == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a WHERE a.MovieId = m.MovieId and a.PlatformName = 'Netflix'))`);
+        subconditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a4 WHERE a4.MovieId = m1.MovieId and a4.PlatformName = 'Netflix'))`);
     }
     if (hulu == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a1 WHERE a1.MovieId = m.MovieId and a1.PlatformName = 'Hulu'))`);
+        subconditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a5 WHERE a5.MovieId = m1.MovieId and a5.PlatformName = 'Hulu'))`);
     }
     if (disneyplus == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a2 WHERE a2.MovieId = m.MovieId and a2.PlatformName = 'Disney+'))`);
+        subconditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a6 WHERE a6.MovieId = m1.MovieId and a6.PlatformName = 'Disney+'))`);
     }
     if (primevideo == 1) {
         conditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a3 WHERE a3.MovieId = m.MovieId and a3.PlatformName = 'Prime Video'))`);
+        subconditions.push(`(EXISTS(SELECT * FROM MoviePlatformAssociation a7 WHERE a7.MovieId = m1.MovieId and a7.PlatformName = 'Prime Video'))`);
     }
     if (score != null) {
         conditions.push(`(m.Score >= ${score})`);
+        subconditions.push(`(m1.Score >= ${score})`);
     }
+
+    var where = ""
 
     for (let i = 0; i < conditions.length; i++) {
         if (i == 0) {
             avgsql += " WHERE ";
             sql += " WHERE ";
+
         }
         avgsql += conditions[i] + " ";
         sql += conditions[i] + " ";
+        where += subconditions[i] + " ";
         if (i != conditions.length - 1) {
             avgsql += " AND ";
             sql += "AND ";
+            where += " AND ";
         }
     }
     if (acclaimed == 1) {
-        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + avgsql + ")" + " AND " + "m1 IN (" + sql + ")"
+        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + avgsql + ")" + " AND " + where
         sql += " ORDER BY m1.Score desc"
     } else {
         sql += " ORDER BY m.Score desc"
