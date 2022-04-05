@@ -55,7 +55,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {
         return (
-          <div className='rating'><Rate allowHalf defaultValue={null} onChange={onChangeRating}>{rating}</Rate> </div>
+          <div className='rating'><Rate defaultValue={null} onChange={onChangeRating}>{rating}</Rate> </div>
         );
       }
     },
