@@ -11,6 +11,15 @@ import { NULL } from 'mysql/lib/protocol/constants/types';
 
 const MovieTable = () => {
 
+  const addToWatchList = (e) => {
+    FlixService.addToWatchList(e);
+  }
+
+
+  const removeFromWatchList = (e) => {
+    console.log(e);
+  }
+
   const columns = [
     {
       title: 'Title',
@@ -76,10 +85,11 @@ const MovieTable = () => {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => (
+      dataIndex: 'action',
+      render: (record) => (
         <Space size="middle">
-          <a>Add {record.name}</a>
-          <a>Remove</a>
+          <Button onClick = {() => addToWatchList(record)}>Add</Button>
+          <Button onClick = {() => removeFromWatchList(record)}>Remove</Button>
         </Space>
       ),
     },
@@ -96,6 +106,7 @@ const MovieTable = () => {
   const [search, setSearch] = useState();
   const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [watchList, setWatchList] = useState([]);
 
 
   const showModal = () => {
@@ -216,6 +227,19 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
+    console.log("FETCH WATCHLIST");
+    const fetchWatchList = async () => {
+      const watchlistRes = await FlixService.getWatchList();
+      var movieTitles = [];
+      watchlistRes.forEach(function(movie) {
+        movieTitles.push(movie.Title);
+      })
+      setWatchList(movieTitles);
+    }
+    fetchWatchList();
+  }, [isModalVisible]);
+
+  useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
     var filters = {age_rating:age, min_year:minYear, max_year: maxYear, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score:score, search: search};
@@ -232,7 +256,7 @@ const MovieTable = () => {
        if (movieToPlatforms[movie.MovieId] == null) {
          platforms = []
        }
-        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: 2});
+        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: 2, action: movie.MovieId});
       }) }
       catch (e) {
         console.log(e);
@@ -270,9 +294,9 @@ const MovieTable = () => {
       </Button>
     </div>
     <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      {watchList.map((movie) => (
+        <p>{movie}</p>
+      ))}
       </Modal>
     <div className='movies-table'>
     <Table columns={columns} dataSource={movies} />    
