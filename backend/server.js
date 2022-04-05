@@ -89,11 +89,14 @@ app.get('/movies', (request, response) => {
     }
     if (acclaimed == 1) {
         sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + sql + ")"
+        sql += " ORDER BY m1.Score desc"
+    } else {
+        sql += " ORDER BY m.Score desc"
     }
 
 
     
-    sql += " ORDER BY m.Score desc"
+    
     console.log(sql);
 
     connection.query(sql, (err, result) => {
