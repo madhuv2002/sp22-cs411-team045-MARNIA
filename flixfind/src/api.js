@@ -38,19 +38,20 @@ const getPlatforms = async (params) => {
     });
 }
 
-const getWatchList = async (params) => {
+const getWatchList = async () => {
   const promise = axios.get(apiUri + '/listmovie', {
       params: {listId: 1}
   });
   return await promise.then(response => response.data).then(
     response => { 
+      console.log(response);
       return response; 
     });
 }
 
 const addToWatchList = async (params) => {
   const promise = axios.post(apiUri + '/listmovie', {
-    params: {listId: 1, movieId: params}
+    listId: 1, movieId: params
 });
 return await promise.then(response => response.data).then(
   response => { 

@@ -227,16 +227,17 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
+    console.log("FETCH WATCHLIST");
     const fetchWatchList = async () => {
       const watchlistRes = await FlixService.getWatchList();
-      movies = [];
-      watchlistRes.forEach(async function(movie) {
-       movies.push(movie.Title);
+      var movieTitles = [];
+      watchlistRes.forEach(function(movie) {
+        movieTitles.push(movie.Title);
       })
-      setWatchList(movies);
+      setWatchList(movieTitles);
     }
     fetchWatchList();
-  }, []);
+  }, [isModalVisible]);
 
   useEffect(() => {
     const populateMovies = [];

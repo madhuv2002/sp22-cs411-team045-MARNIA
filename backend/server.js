@@ -6,6 +6,8 @@ var mysql = require('mysql2');
 const res = require('express/lib/response');
 const req = require('express/lib/request');
 const cors = require('cors');
+const exp = require('constants');
+
 
 
 var connection = mysql.createConnection({
@@ -22,6 +24,8 @@ connection.connect(function(err) {
 
 var app = express();
 app.use(cors());
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
 
 app.get('/', (request, response) => {
@@ -118,9 +122,9 @@ app.post('/list', (request, response) => {
     var userId = request.query.UserId;
     var sql;
     if (blackList) {
-        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
+        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
     } else {
-        sql = `INSERT INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
+        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
     }
     console.log(sql);
     connection.query(sql, (err, result) => {
@@ -138,23 +142,27 @@ app.post('/list', (request, response) => {
 app.get('/listmovie', (request, response) => {
     var listId = request.query.listId;
     if (listId == null) {
-        var sql = `SELECT * FROM MovieListMovieAssociation a`;
+        var sql = `SELECT DISTINCT * FROM MovieListMovieAssociation a`;
     } else {
-        var sql = `SELECT m.Title FROM Movies m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
+        var sql = `SELECT DISTINCT m.Title FROM Movie m Join MovieListMovieAssociation a on  m.MovieId = a.MovieId WHERE a.ListId = ${listId}`;
     }
     console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        console.log(result);
         response.send(result);
     });
 });
 app.post('/listmovie', (request, response) => {
-    var listId = request.query.listId;
-    var movieId = request.query.movieId;
-    
-    var sql = `INSERT INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
+  console.log(request.body)
+    var listId = request.body.listId;
+    var movieId = request.body.movieId;
+    console.log(listId);
+    console.log(movieId);
+    var sql = `INSERT IGNORE INTO MovieListMovieAssociation(MovieId, ListId) VALUES (${movieId}, ${listId})`;
+    console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
