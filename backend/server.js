@@ -79,13 +79,13 @@ app.get('/movies', (request, response) => {
 
     for (let i = 0; i < conditions.length; i++) {
         if (i == 0) {
-            avgsql = " WHERE ";
+            avgsql += " WHERE ";
             sql += " WHERE ";
         }
-        avgsql = conditions[i] + " ";
+        avgsql += conditions[i] + " ";
         sql += conditions[i] + " ";
         if (i != conditions.length - 1) {
-            avgsql = " WHERE ";
+            avgsql += " AND ";
             sql += "AND ";
         }
     }
