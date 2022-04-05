@@ -7,6 +7,8 @@ import { Modal, Button, Card } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import FlixService from '../api';
 import { NULL } from 'mysql/lib/protocol/constants/types';
+import { Row, Col } from 'antd';
+import './Style.css';
 
 
 const MovieTable = () => {
@@ -56,7 +58,7 @@ const MovieTable = () => {
       title: 'Platforms',
       key: 'platforms',
       dataIndex: 'platforms',
-  
+
       render: tags => (
         <>
           {tags.map(tag => {
@@ -88,8 +90,8 @@ const MovieTable = () => {
       dataIndex: 'action',
       render: (record) => (
         <Space size="middle">
-          <Button onClick = {() => addToWatchList(record)}>Add</Button>
-          <Button onClick = {() => removeFromWatchList(record)}>Remove</Button>
+          <Button onClick={() => addToWatchList(record)}>Add</Button>
+          <Button onClick={() => removeFromWatchList(record)}>Remove</Button>
         </Space>
       ),
     },
@@ -100,7 +102,7 @@ const MovieTable = () => {
   const [hulu, setHulu] = useState();
   const [prime, setPrime] = useState();
   const [disney, setDisney] = useState();
-  
+
   const [movies, setMovies] = useState([]);
   const { Search } = Input;
   const [search, setSearch] = useState();
@@ -145,14 +147,14 @@ const MovieTable = () => {
       setDisney(0);
     }
   }
-  
+
   const platformOptions = [
     { label: 'Netflix', value: 'Netflix' },
     { label: 'Disney+', value: 'Disney+' },
     { label: 'Hulu', value: 'Hulu' },
     { label: 'Prime Video', value: 'Prime Video' },
   ];
-  
+
   const ageOptions = [
     { label: '7+', value: '7+' },
     { label: '13+', value: '13+' },
@@ -163,10 +165,10 @@ const MovieTable = () => {
 
 
   const [age, setAge] = useState();
-  
+
   // const AgeButtons = () => {
   //   const [value, setValue] = React.useState();
-  
+
   //   const onClick = e => {
   //     setValue(e.target.value);
   //     setAge(value);
@@ -180,13 +182,13 @@ const MovieTable = () => {
   //     </Radio.Group>
   //   );
   // };
-  
+
   function onChangeRadio(checkedValue) {
     console.log(checkedValue.target.value);
     setAge(checkedValue.target.value);
   }
 
-  
+
   const [score, setScore] = useState();
   function onChangeScore(value) {
     console.log('onChange: ', value);
@@ -195,7 +197,7 @@ const MovieTable = () => {
 
   function onAfterChangeScore(value) {
     console.log('onAfterChange: ', value);
-    
+
   }
 
   const [minYear, setMinYear] = useState();
@@ -207,16 +209,16 @@ const MovieTable = () => {
   }
   function onAfterChangeYear(value) {
     console.log('onAfterChange: ', value);
-    
+
   }
-  
+
 
   useEffect(() => {
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
       const mToP = new Map();
-      platformRes.forEach(async function(x) {
-        if (mToP[x.MovieId]== null) {
+      platformRes.forEach(async function (x) {
+        if (mToP[x.MovieId] == null) {
           mToP[x.MovieId] = []
         }
         mToP[x.MovieId].push(x.PlatformName);
@@ -231,7 +233,7 @@ const MovieTable = () => {
     const fetchWatchList = async () => {
       const watchlistRes = await FlixService.getWatchList();
       var movieTitles = [];
-      watchlistRes.forEach(function(movie) {
+      watchlistRes.forEach(function (movie) {
         movieTitles.push(movie.Title);
       })
       setWatchList(movieTitles);
@@ -242,25 +244,26 @@ const MovieTable = () => {
   useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
-    var filters = {age_rating:age, min_year:minYear, max_year: maxYear, netflix:netflix, hulu:hulu, disneyplus:disney, primevideo:prime, score:score, search: search};
+      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search };
 
       try {
         const res = await FlixService.getAllMovies(filters);
-      res.forEach(async function(movie) {
-        // const platformObjects = await FlixService.getPlatforms(movie.MovieId);
-        // const platforms = []
-        // platformObjects.forEach(function(p) {
-        //   platforms.push(p.PlatformName);
-        // })
-       var platforms = movieToPlatforms[movie.MovieId]
-       if (movieToPlatforms[movie.MovieId] == null) {
-         platforms = []
-       }
-        populateMovies.push({key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: 2, action: movie.MovieId});
-      }) }
+        res.forEach(async function (movie) {
+          // const platformObjects = await FlixService.getPlatforms(movie.MovieId);
+          // const platforms = []
+          // platformObjects.forEach(function(p) {
+          //   platforms.push(p.PlatformName);
+          // })
+          var platforms = movieToPlatforms[movie.MovieId]
+          if (movieToPlatforms[movie.MovieId] == null) {
+            platforms = []
+          }
+          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: 2, action: movie.MovieId });
+        })
+      }
       catch (e) {
         console.log(e);
-      }  
+      }
       setMovies(populateMovies);
     };
     fetchMovies();
@@ -269,50 +272,48 @@ const MovieTable = () => {
 
   return (
     <div className="App">
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-      <Card size="small">
-      <div>
-        <Search placeholder="input search text" onSearch={onSearch} enterButton />
-      </div>
-      </Card>
+      <Row>
+        <Col span={17} push={6}>
+        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Card size="small">
+          <div>
+            <Search placeholder="input search text" onSearch={onSearch} enterButton />
+          </div>
+        </Card>
       </Space>
-       <div className="container">
-        <div className="all-filters">
-          <Space size={'large'} align="center">
-            <div className='Filters'>
-              <p>Streaming Platform</p>
-              <Checkbox.Group options={platformOptions} onChange={onChange} />
-              <br />
-              <br />
-              <p>Age Rating</p>
-              <Radio.Group options={ageOptions} onChange={onChangeRadio} />
-              <br />
-              <br />
-              <p>Score</p>
-              <Slider defaultValue={30} onChange={onChangeScore} onAfterChange={onAfterChangeScore} />
-              <br />
-              <p>Year Released</p>
-              <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} onChange={onChangeYear}
-                onAfterChange={onAfterChangeYear} />
-            </div>
+          <Button type="primary" onClick={showModal}>
+            View WatchList
+          </Button>
+          <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            {watchList.map((movie) => (
+              <p>{movie}</p>
+            ))}
+          </Modal>
+          <Table columns={columns} dataSource={movies} />
 
-          <span className="modal-table">
-            <div className='movies-table'>
-              <Button type="primary" onClick={showModal}>
-                View WatchList
-              </Button>
-              <Modal title="Watchlist" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                {watchList.map((movie) => (
-                  <p>{movie}</p>
-                ))}
-                </Modal>
-              <Table columns={columns} dataSource={movies} />    
-              </div>
-            </span>
-          </Space>
-        </div>
-      </div>
-  </div>
+        </Col>
+        <Col span={6} pull={17} >
+        <Card size="small" >
+          <div className='Filters' >
+            <p>Streaming Platform</p>
+            <Checkbox.Group options={platformOptions} onChange={onChange} />
+            <br />
+            <br />
+            <p>Age Rating</p>
+            <Radio.Group options={ageOptions} onChange={onChangeRadio} />
+            <br />
+            <br />
+            <p>Score</p>
+            <Slider defaultValue={30} onChange={onChangeScore} onAfterChange={onAfterChangeScore} />
+            <br />
+            <p>Year Released</p>
+            <Slider min={1960} max={2022} range defaultValue={[2000, 2010]} onChange={onChangeYear}
+              onAfterChange={onAfterChangeYear} />
+          </div>
+          </Card>
+        </Col>
+      </Row>,
+    </div>
   );
 }
 
