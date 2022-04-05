@@ -50,7 +50,7 @@ app.get('/movies', (request, response) => {
     var disneyplus = request.query.disneyplus;
     var primevideo = request.query.primevideo;
     var score = request.query.score;
-    var acclaimed = request.query.score;
+    var acclaimed = request.query.acclaimed;
     if (search != null) {
         conditions.push(`(m.Title LIKE '${search}%')`)
     }
@@ -76,19 +76,21 @@ app.get('/movies', (request, response) => {
         conditions.push(`(m.Score >= ${score})`);
     }
 
-    
-
+    var filtersql = "";
     for (let i = 0; i < conditions.length; i++) {
         if (i == 0) {
+            filtersql = " WHERE ";
             sql += " WHERE ";
         }
+        filtersql = conditions[i] + " ";
         sql += conditions[i] + " ";
         if (i != conditions.length - 1) {
+            filtersql += " AND "
             sql += "AND ";
         }
     }
     if (acclaimed == 1) {
-        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + sql + ")"
+        sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + sql + ")" + " AND " + "m1 IN (" + sql + ")"
         sql += " ORDER BY m1.Score desc"
     } else {
         sql += " ORDER BY m.Score desc"
