@@ -169,17 +169,15 @@ app.post('/listmovie', (request, response) => {
     });
 });
 app.delete('/listmovie', (request, response) => {
-   var listId = request.body.listId;
-   var movieId = request.body.movieId;
-    console.log(listId);
-    console.log(movieId);
+    var listId = request.body.listId;
+    var movieId = request.body.movieId;
     var sql = `DELETE FROM MovieListMovieAssociation a WHERE a.ListId = ${listId} AND a.MovieId = ${movieId}`;
     console.log(sql);
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
-        console.log('record inserted');
+        console.log('record deleted');
     });
 });
 

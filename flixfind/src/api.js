@@ -58,10 +58,10 @@ return await promise.then(response => response.data).then(
     return response; 
   });
 }
-const deleteFromWatchList = async (params) => {
-  const promise = axios.delete(apiUri + '/listmovie', {
+const removeFromWatchList = async (params) => {
+  const promise = axios.delete(apiUri + '/listmovie', {data: {
     listId: 1, movieId: params
-});
+}});
 return await promise.then(response => response.data).then(
   response => { 
     return response; 
@@ -75,6 +75,6 @@ return await promise.then(response => response.data).then(
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList};
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList};
 
 export default FlixService;
