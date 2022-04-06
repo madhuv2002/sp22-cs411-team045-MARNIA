@@ -12,7 +12,6 @@ import './Style.css';
 
 
 const MovieTable = () => {
-  const [movieRatings, setMovieRatings] = useState({});
   const addToWatchList = (e) => {
     console.log("ADD TO WATCH LIST");
     FlixService.addToWatchList(e);
@@ -55,9 +54,9 @@ const MovieTable = () => {
       title: 'User Rating',
       dataIndex: 'userRating',
       key: 'userRating',
-      render: rating => {
+      render: rating => {  // {userId: 1, movieId: movie.MovieId, rating: movie.RatingScore}
         return (
-          <div className='rating'><Rate defaultValue={rating}>{rating}</Rate> </div>
+          <div className='rating'><Rate defaultValue={rating.rating} onChange={(e) => onChangeRating({userId: rating.userId, movieId: rating.movieId, ratingScore: e})}>{rating.rating}</Rate> </div>
         );
       }
     },
@@ -233,10 +232,11 @@ const MovieTable = () => {
 
   }
 
-  // function onChangeRating(checkedValue) {
-  //   setRating(checkedValue);
-  //   // console.log(checkedValue);
-  // }
+  function onChangeRating(obj) {
+    console.log(obj);
+    FlixService.addRating(obj);
+    // console.log(checkedValue);
+  }
 
 
   useEffect(() => {
@@ -255,19 +255,6 @@ const MovieTable = () => {
   }, []);
 
   useEffect(() => {
-    const fetchRatings = async () => {
-      const ratingRes = await FlixService.getRatings();
-      const mToR = new Map();
-      ratingRes.forEach(async function (x) {
-        // console.log(x.Score)
-        mToR[x.movieId] = x.Score;
-      })
-      setMovieRatings(mToR);
-    }
-    fetchRatings();
-  }, []);
-
-  useEffect(() => {
     // console.log("FETCH WATCHLIST");
     const fetchWatchList = async () => {
       const watchlistRes = await FlixService.getWatchList();
@@ -283,9 +270,10 @@ const MovieTable = () => {
 
 
   useEffect(() => {
+    console.log("pop movies");
     const populateMovies = [];
     const fetchMovies = async () => {
-      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search, acclaimed:acclaim };
+      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search, acclaimed:acclaim, userId: 1};
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -299,12 +287,9 @@ const MovieTable = () => {
           if (movieToPlatforms[movie.MovieId] == null) {
             platforms = []
           }
-          var rating = movieRatings[movie.MovieId];
-          
-          if (rating == null) {
-            rating = 0;
-          }
-          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: rating, action: movie.MovieId });
+          var id = movie.MovieId;
+          console.log(movie);
+          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: {userId: 1, movieId: id, rating: movie.RatingScore} , action: movie.MovieId });
         })
       }
       catch (e) {
@@ -313,7 +298,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear, acclaim, movieRatings]);
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear, acclaim]);
 
 
   return (

@@ -40,7 +40,7 @@ app.get('/movies', (request, response) => {
         var avgsql = "SELECT AVG(m.score) FROM Movie m";
     } 
     if (userId != null) {
-        var sql = `SELECT * FROM Movie m Left Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings on m.MovieId = ratings.MovieId `;
+        var sql = `SELECT * FROM Movie m Natural Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings`;
     } else {
         var sql = `SELECT * FROM Movie m `
     }
@@ -126,6 +126,7 @@ app.get('/movies', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        console.log(result)
         response.send(result);
     });
 });
@@ -264,7 +265,6 @@ app.post('/ratings', (request, response) => {
             response.status(400).send('Error in database operation');
         }
         console.log('record inserted');
-        response.send('Got a POST request');
     });
 });
 
