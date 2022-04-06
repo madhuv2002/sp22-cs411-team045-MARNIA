@@ -111,6 +111,7 @@ app.get('/movies', (request, response) => {
         }
     }
     if (acclaimed == 1) {
+        
         sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + avgsql + ")" + " AND " + where
         sql += " ORDER BY m1.Score desc"
     } else {
@@ -253,10 +254,10 @@ app.get('/ratings', (request, response) => {
 app.post('/ratings', (request, response) => {
     var userId = request.body.userId;
 	var movieId = request.body.movieId;
-    var dateTime = request.body.dateTime;
+    //var dateTime = request.body.dateTime;
     var ratingScore = request.body.ratingScore;
 	
-	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, ${dateTime}, ${ratingScore}) 
+	var sql = `INSERT INTO Rating(UserId, MovieId, DateTime, Score) VALUES (${userId}, ${movieId}, NULL, ${ratingScore}) 
                 ON DUPLICATE KEY UPDATE Score = VALUES (Score)`;
 
     console.log(sql)
