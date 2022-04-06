@@ -19,66 +19,63 @@ import axios from 'axios';
 const apiUri = 'http://localhost:80';
 
 const getAllMovies = async (params) => {
-    const promise = axios.get(apiUri + '/movies', {
-        params: params
+  const promise = axios.get(apiUri + '/movies', {
+    params: params
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
     });
-    return await promise.then(response => response.data).then(
-      response => { 
-        return response; 
-      });
 }
 
 const getPlatforms = async (params) => {
   const promise = axios.get(apiUri + '/platforms', {
-      params: {movieId: params}
+    params: { movieId: params }
   });
   return await promise.then(response => response.data).then(
-    response => { 
-      return response; 
+    response => {
+      return response;
     });
 }
 
 const getWatchList = async () => {
   const promise = axios.get(apiUri + '/listmovie', {
-      params: {listId: 1}
+    params: { listId: 1 }
   });
   return await promise.then(response => response.data).then(
-    response => { 
-      console.log(response);
-      return response; 
+    response => {
+      return response;
     });
 }
 
 const addToWatchList = async (params) => {
-  console.log("ADD IN API");
   const promise = axios.post(apiUri + '/listmovie', {
     listId: 1, movieId: params
-});
-return await promise.then(response => response.data).then(
-  response => { 
-    return response; 
   });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
 }
 const removeFromWatchList = async (params) => {
-  const promise = axios.delete(apiUri + '/listmovie', {data: {
-    listId: 1, movieId: params
-}});
-return await promise.then(response => response.data).then(
-  response => { 
-    return response; 
+  const promise = axios.delete(apiUri + '/listmovie', {
+    data: {
+      listId: 1, movieId: params
+    }
   });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
 }
 
 const getRatings = async (params) => {
-
-  console.log("Fetch ratings")
   const promise = axios.get(apiUri + '/ratings', {
-      params: params
+    params: params
   });
   return await promise.then(response => response.data).then(
-    response => { 
-      console.log(response);
-      return response; 
+    response => {
+      return response;
     });
 }
 
@@ -87,8 +84,8 @@ const addRating = async (params) => {
     userId: params.userId, movieId: params.movieId, ratingScore: params.ratingScore
   });
   return await promise.then(response => response.data).then(
-    response => { 
-      return response; 
+    response => {
+      return response;
     });
 }
 
@@ -103,13 +100,15 @@ const addRating = async (params) => {
 // }
 
 const removeRating = async (params) => {
-  const promise = axios.delete(apiUri + '/ratings', {data: {
-    userId: params.userId, movieId: params.movieId
-}});
-return await promise.then(response => response.data).then(
-  response => { 
-    return response; 
+  const promise = axios.delete(apiUri + '/ratings', {
+    data: {
+      userId: params.userId, movieId: params.movieId
+    }
   });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
 }
 
 
