@@ -9,7 +9,7 @@ import { Button } from 'antd';
 function HomePage() {
   return (
     <div className="App">
-        <Button>Log In</Button>
+        <Button href='login'>Log In</Button>
       <div className="Title">
         <h1>FlixFind+</h1>
       </div>
