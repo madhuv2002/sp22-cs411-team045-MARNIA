@@ -313,8 +313,3 @@ app.get('/users', (request, response) => {
 })
 
 
-
-app.post()
-app.get()
-
-
