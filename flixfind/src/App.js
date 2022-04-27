@@ -1,18 +1,15 @@
 import { Navigate, Route, Routes } from "react-router-dom"
 import './App.css';
 import HomePage from './pages/home';
+import LoginPage from './pages/home';
 
 function App() {
   return (
     <>
     <div>
       <Routes>
-        <Route path="/home"
-          element={<HomePage />}> <HomePage />
-        </Route>
-        <Route path="/">
-          <Navigate to="/home" />
-        </Route>
+        <Route path="/home"element={<HomePage />}/>
+        <Route path="/login"element={<LoginPage />}/>
       </Routes>
     </div>
     </>

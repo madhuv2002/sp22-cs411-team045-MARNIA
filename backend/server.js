@@ -311,5 +311,3 @@ app.get('/users', (request, response) => {
         response.send(result);
     });
 })
-
-
