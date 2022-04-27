@@ -269,19 +269,6 @@ app.post('/ratings', (request, response) => {
     });
 });
 
-// app.put('/ratings', (request, response) => {
-//     var movieId = request.body.movieId;
-//     var userId = request.body.userId;
-//     var updatedRating = request.body.updatedRating;
-//     var sql = `UPDATE Rating r SET r.Score = ${updatedRating} WHERE r.UserId = ${userId} AND r.MovieId = ${movieId}`;
-//     connection.query(sql, (err, result) => {
-//         if (err) {
-//             response.status(400).send('Error in database operation');
-//         }
-//         response.send('Got a PUT request');
-//     });
-// });
-
 app.delete('/ratings', (request, response) => {
    var movieId = request.body.movieId;
    var userId = request.body.userId;
@@ -294,9 +281,40 @@ app.delete('/ratings', (request, response) => {
    });
 });
 
-app.listen(80, function () {
-    console.log('Node app is running on port 80');
-});
 
+app.post('/users', (request, response) => {
+    var userId = request.body.userId;
+	var password = request.body.password;
+    var username = request.body.username;
+    var age = request.body.age;
+
+	
+	var sql = `INSERT INTO User(UserId, Password, Age, Username) VALUES (${userId}, ${password}, ${age}, ${username})`;
+    console.log(sql)
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        console.log('record inserted');
+    });
+});
+app.get('/users', (request, response) => {
+    var userName = request.body.username;
+    var password = request.body.password;
+    var sql = `SELECT u.UserId FROM User u WHERE u.userName = ${userName} AND CONCAT('*', UPPER(SHA1(UNHEX(SHA1(${password})))))`
+    console.log(sql)
+	
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        response.send(result);
+    });
+})
+
+
+
+app.post()
+app.get()
 
 
