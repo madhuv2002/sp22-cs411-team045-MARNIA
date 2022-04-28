@@ -25,7 +25,7 @@ const LoginPage = () => {
         span: 8,
       }}
       wrapperCol={{
-        span: 16,
+        span: 6,
       }}
       initialValues={{
         remember: true,
@@ -79,7 +79,7 @@ const LoginPage = () => {
         span: 8,
       }}
       wrapperCol={{
-        span: 16,
+        span: 6,
       }}
       initialValues={{
         remember: true,
