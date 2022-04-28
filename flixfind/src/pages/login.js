@@ -1,4 +1,4 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import './Title.css';
 import '@ant-design/compatible/assets/index.css';
@@ -6,6 +6,17 @@ import 'antd/dist/antd.css';
 import './login.css';
 import FlixService from '../api';
 import { useNavigate } from "react-router-dom";
+
+const { confirm } = Modal;
+
+function showConfirm() {
+  confirm({
+    title: 'Account succesfully created!',
+    onOk() {
+      console.log('OK');
+    },
+  });
+}
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -161,7 +172,7 @@ const LoginPage = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" onClick={showConfirm}>
           Submit
         </Button>
       </Form.Item>

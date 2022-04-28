@@ -103,8 +103,8 @@ const MovieTable = () => {
         <Space size="middle">
           <Button onClick={() => addToWatchList(record)}>Add to WatchList</Button>
           <Button onClick={() => removeFromWatchList(record)}>Remove from WatchList</Button>
-          <Button onClick={() => addToWatchList(record)}>Add to BlackList</Button>
-          <Button onClick={() => removeFromWatchList(record)}>Remove from BlackList</Button>
+          <Button onClick={() => addToBlackList(record)}>Add to BlackList</Button>
+          <Button onClick={() => removeFromBlackList(record)}>Remove from BlackList</Button>
         </Space>
       ),
     },
