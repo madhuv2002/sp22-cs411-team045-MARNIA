@@ -38,9 +38,9 @@ const getPlatforms = async (params) => {
     });
 }
 
-const getWatchList = async () => {
+const getWatchList = async (params) => {
   const promise = axios.get(apiUri + '/listmovie', {
-    params: { listId: 1 }
+    params: { listId: params }
   });
   return await promise.then(response => response.data).then(
     response => {
@@ -50,7 +50,7 @@ const getWatchList = async () => {
 
 const addToWatchList = async (params) => {
   const promise = axios.post(apiUri + '/listmovie', {
-    listId: 1, movieId: params
+    listId: params.id, movieId: params.values
   });
   return await promise.then(response => response.data).then(
     response => {
@@ -60,7 +60,7 @@ const addToWatchList = async (params) => {
 const removeFromWatchList = async (params) => {
   const promise = axios.delete(apiUri + '/listmovie', {
     data: {
-      listId: 1, movieId: params
+      listId: params.id, movieId: params.values
     }
   });
   return await promise.then(response => response.data).then(
@@ -133,7 +133,7 @@ const postUserID = async (params) => {
 
 const addToBlackList = async (params) => {
   const promise = axios.post(apiUri + '/listmovie', {
-    listId: 1, movieId: params, blackList:1
+    listId: params.id, movieId: params.values
   });
   return await promise.then(response => response.data).then(
     response => {
@@ -143,7 +143,7 @@ const addToBlackList = async (params) => {
 const removeFromBlackList = async (params) => {
   const promise = axios.delete(apiUri + '/listmovie', {
     data: {
-      listId: 1, movieId: params, blackList:1
+      listId: params.id, movieId: params.values
     }
   });
   return await promise.then(response => response.data).then(
@@ -152,6 +152,15 @@ const removeFromBlackList = async (params) => {
     });
 }
 
+const getBlackList = async (params) => {
+  const promise = axios.get(apiUri + '/listmovie', {
+    params: { listId: params }
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
+}
 
 
 // const getCourseListMeta = () => {
@@ -160,6 +169,6 @@ const removeFromBlackList = async (params) => {
 // }
 
 const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, removeRating, getUserID, postUserID,
-  addToBlackList, removeFromBlackList };
+  addToBlackList, removeFromBlackList, getBlackList };
 
 export default FlixService;
