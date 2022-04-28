@@ -36,6 +36,7 @@ const LoginPage = () => {
     FlixService.postUserID({username: values.username, password: values.password, age: parseInt(values.age)});
     // console.log(userIdRes[0].UserId);
     console.log('Success:', values);
+    showConfirm();
   };
 
   const onFinishFailedCreate = (errorInfo) => {
@@ -172,7 +173,7 @@ const LoginPage = () => {
           span: 16,
         }}
       >
-        <Button type="primary" htmlType="submit" onClick={showConfirm}>
+        <Button type="primary" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
