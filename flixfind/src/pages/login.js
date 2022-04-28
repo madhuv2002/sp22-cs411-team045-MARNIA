@@ -1,17 +1,44 @@
 import { Form, Input, Button, Checkbox } from 'antd';
+import { useEffect, useState } from 'react';
 import './Title.css';
 import '@ant-design/compatible/assets/index.css';
 import 'antd/dist/antd.css'; 
 import './login.css';
+import FlixService from '../api';
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const onFinish = (values) => {
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    console.log(values);
+    const userIdRes = await FlixService.getUserID(values);
+    // console.log(userIdRes[0].UserId);
+    navigate(`/home/${userIdRes[0].UserId}`);
     console.log('Success:', values);
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
+  const onFinishCreate = async (values) => {
+    console.log(values);
+    FlixService.postUserID({username: values.username, password: values.password, age: parseInt(values.age)});
+    // console.log(userIdRes[0].UserId);
+    console.log('Success:', values);
+  };
+
+  const onFinishFailedCreate = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [userid, setUserId] = useState();
+
+  // const getUserID = (e) => {
+  //   // const userIDRes = FlixService.getUserID();
+  //   // setUserId(userIDRes);
+
+  // }
 
   return (
       <div>
@@ -84,8 +111,8 @@ const LoginPage = () => {
       initialValues={{
         remember: true,
       }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
+      onFinish={onFinishCreate}
+      onFinishFailed={onFinishFailedCreate}
       autoComplete="off"
     >
       <Form.Item

@@ -40,7 +40,7 @@ app.get('/movies', (request, response) => {
         var avgsql = "SELECT AVG(m.score) FROM Movie m";
     } 
     if (userId != null) {
-        var sql = `SELECT * FROM Movie m Natural Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings`;
+        var sql = `SELECT m.MovieId, m.Title, m.Year, m.AgeRating, m.Score, ratings.RatingScore FROM Movie m Left Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings on m.MovieId = ratings.MovieId`;
     } else {
         var sql = `SELECT * FROM Movie m `
     }
@@ -127,7 +127,7 @@ app.get('/movies', (request, response) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
-        console.log(result)
+       
         response.send(result);
     });
 });
@@ -289,7 +289,7 @@ app.post('/users', (request, response) => {
     var age = request.body.age;
 
 	
-	var sql = `INSERT INTO User(UserId, Password, Age, Username) VALUES (${userId}, ${password}, ${age}, ${username})`;
+	var sql = `INSERT INTO User(UserId, Password, Age, Username) VALUES ( ${userId}, "${password}", ${age}, "${username}")`;
     console.log(sql)
     connection.query(sql, (err, result) => {
         if (err) {
@@ -299,15 +299,20 @@ app.post('/users', (request, response) => {
     });
 });
 app.get('/users', (request, response) => {
-    var userName = request.body.username;
-    var password = request.body.password;
-    var sql = `SELECT u.UserId FROM User u WHERE u.userName = ${userName} AND CONCAT('*', UPPER(SHA1(UNHEX(SHA1(${password})))))`
+    
+    var userName = request.query.username;
+    var password = request.query.password;
+    var sql = `SELECT u.UserId FROM User u WHERE u.userName =  "${userName}" AND MD5("${password}")`
     console.log(sql)
 	
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
+        console.log(result);
         response.send(result);
     });
 })
+app.listen(80, function() {
+  console.log("Node app is running on port 80")
+});

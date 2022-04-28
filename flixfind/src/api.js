@@ -111,12 +111,34 @@ const removeRating = async (params) => {
     });
 }
 
+const getUserID = async (params) => {
+  const promise = axios.get(apiUri + '/users', {
+    params: params
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
+}
+
+const postUserID = async (params) => {
+  const promise = axios.post(apiUri + '/users', {
+    userId: 1, age: params.age, password: params.password, username: params.username
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
+}
+
+
+
 
 // const getCourseListMeta = () => {
 //     const promise = axios.get(`${apiUri}/2021-sp/summary`);
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, removeRating };
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, removeRating, getUserID, postUserID };
 
 export default FlixService;

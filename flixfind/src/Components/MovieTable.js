@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import {useParams} from 'react-router-dom';
 import '@ant-design/compatible/assets/index.css';
 import { Rate, Input, Space } from 'antd';
 import { Table, Tag, Checkbox, Slider, Radio } from 'antd';
@@ -11,7 +12,9 @@ import { Row, Col } from 'antd';
 import './Style.css';
 
 
+
 const MovieTable = () => {
+  const { id } = useParams();
   const addToWatchList = (e) => {
     FlixService.addToWatchList(e);
   }
@@ -49,7 +52,7 @@ const MovieTable = () => {
       key: 'userRating',
       render: rating => {  // {userId: 1, movieId: movie.MovieId, rating: movie.RatingScore}
         return (
-          <div className='rating'><Rate defaultValue={rating.rating} onChange={(e) => onChangeRating({userId: rating.userId, movieId: rating.movieId, ratingScore: e})}>{rating.rating}</Rate> </div>
+          <div className='rating'><Rate defaultValue={rating.rating} onChange={(e) => onChangeRating({userId: id, movieId: rating.movieId, ratingScore: e})}>{rating.rating}</Rate> </div>
         );
       }
     },
@@ -238,7 +241,7 @@ const MovieTable = () => {
   useEffect(() => {
     const populateMovies = [];
     const fetchMovies = async () => {
-      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search, acclaimed:acclaim, userId: 1};
+      var filters = { age_rating: age, min_year: minYear, max_year: maxYear, netflix: netflix, hulu: hulu, disneyplus: disney, primevideo: prime, score: score, search: search, acclaimed:acclaim, userId: id};
 
       try {
         const res = await FlixService.getAllMovies(filters);
@@ -248,7 +251,7 @@ const MovieTable = () => {
             platforms = []
           }
           var id = movie.MovieId;
-          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: {userId: 1, movieId: id, rating: movie.RatingScore} , action: movie.MovieId });
+          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: {userId: id, movieId: id, rating: movie.RatingScore} , action: movie.MovieId });
         })
       }
       catch (e) {
@@ -256,7 +259,7 @@ const MovieTable = () => {
       setMovies(populateMovies);
     };
     fetchMovies();
-  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear, acclaim]);
+  }, [movieToPlatforms, netflix, disney, hulu, prime, age, search, score, minYear, maxYear, acclaim, id]);
 
 
   return (
