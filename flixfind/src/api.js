@@ -131,6 +131,26 @@ const postUserID = async (params) => {
     });
 }
 
+const addToBlackList = async (params) => {
+  const promise = axios.post(apiUri + '/listmovie', {
+    listId: 1, movieId: params, blackList:1
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
+}
+const removeFromBlackList = async (params) => {
+  const promise = axios.delete(apiUri + '/listmovie', {
+    data: {
+      listId: 1, movieId: params, blackList:1
+    }
+  });
+  return await promise.then(response => response.data).then(
+    response => {
+      return response;
+    });
+}
 
 
 
@@ -139,6 +159,7 @@ const postUserID = async (params) => {
 //     return promise.then(response => response.data);
 // }
 
-const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, removeRating, getUserID, postUserID };
+const FlixService = { getAllMovies, getPlatforms, getWatchList, addToWatchList, removeFromWatchList, getRatings, addRating, removeRating, getUserID, postUserID,
+  addToBlackList, removeFromBlackList };
 
 export default FlixService;

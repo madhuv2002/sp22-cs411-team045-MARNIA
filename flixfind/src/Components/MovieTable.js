@@ -24,6 +24,15 @@ const MovieTable = () => {
     FlixService.removeFromWatchList(e);
   }
 
+  const addToBlackList = (e) => {
+    FlixService.addToBlackList(e);
+  }
+
+
+  const removeFromBlackList = (e) => {
+    FlixService.removeFromBlackList(e);
+  }
+
   const columns = [
     {
       title: 'Title',
@@ -92,12 +101,13 @@ const MovieTable = () => {
       dataIndex: 'action',
       render: (record) => (
         <Space size="middle">
-          <Button onClick={() => addToWatchList(record)}>Add</Button>
-          <Button onClick={() => removeFromWatchList(record)}>Remove</Button>
+          <Button onClick={() => addToWatchList(record)}>Add to WatchList</Button>
+          <Button onClick={() => removeFromWatchList(record)}>Remove from WatchList</Button>
+          <Button onClick={() => addToWatchList(record)}>Add to BlackList</Button>
+          <Button onClick={() => removeFromWatchList(record)}>Remove from BlackList</Button>
         </Space>
       ),
     },
-    
   ];
 
   const [netflix, setNetflix] = useState();
@@ -110,7 +120,9 @@ const MovieTable = () => {
   const [search, setSearch] = useState();
   const [movieToPlatforms, setMoviesToPlatforms] = useState({});
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalBlackVisible, setisModalBlackVisible] = useState(false);
   const [watchList, setWatchList] = useState([]);
+  const [blackList, setBlackList] = useState([]);
 
 
   const showModal = () => {
@@ -124,6 +136,19 @@ const MovieTable = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  const showBlackModal = () => {
+    setisModalBlackVisible(true);
+  };
+
+  const handleOkBlack = () => {
+    setisModalBlackVisible(false);
+  };
+
+  const handleCancelBlack = () => {
+    setisModalBlackVisible(false);
+  };
+
 
 
   const onSearch = value => setSearch(value);
@@ -236,7 +261,17 @@ const MovieTable = () => {
     fetchWatchList();
   }, [isModalVisible]);
 
-
+  useEffect(() => {
+    const fetchBlackList = async () => {
+      const blacklistRes = await FlixService.getBlackList();
+      var movieTitles = [];
+      blacklistRes.forEach(function (movie) {
+        movieTitles.push(movie.Title);
+      })
+      setBlackList(movieTitles);
+    }
+    fetchBlackList();
+  }, [isModalBlackVisible]);
 
   useEffect(() => {
     const populateMovies = [];
@@ -273,6 +308,7 @@ const MovieTable = () => {
           </div>
         </Card>
       </Space>
+      <Space>
           <Button type="primary" onClick={showModal}>
             View WatchList
           </Button>
@@ -281,6 +317,15 @@ const MovieTable = () => {
               <p>{movie}</p>
             ))}
           </Modal>
+          <Button type="primary" onClick={showBlackModal}>
+            View BlackList
+          </Button>
+          <Modal title="BlackList" visible={isModalBlackVisible} onOk={handleOkBlack} onCancel={handleCancelBlack}>
+            {blackList.map((movie) => (
+              <p>{movie}</p>
+            ))}
+          </Modal>
+          </Space>
           <Table columns={columns} dataSource={movies} />
 
         </Col>
