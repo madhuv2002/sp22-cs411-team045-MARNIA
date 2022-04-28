@@ -132,48 +132,48 @@ app.get('/movies', (request, response) => {
     });
 });
 
-app.get('/list', (request, response) => {
-    var blackList = request.query.blackList;
-    var listId = request.query.listId;
-    var sql;
-    if (listId == null) {
-        sql = `SELECT * FROM MovieList m`
-    } else {
-        if (blackList) {
-            sql = `SELECT * FROM BlackList b WHERE b.ListId = ${listId}`
-        } else {
-            sql = `SELECT * FROM WatchList w WHERE w.ListId = ${listId}`
-        }
-    }
+// app.get('/list', (request, response) => {
+//     var blackList = request.query.blackList;
+//     var listId = request.query.listId;
+//     var sql;
+//     if (listId == null) {
+//         sql = `SELECT * FROM MovieList m`
+//     } else {
+//         if (blackList) {
+//             sql = `SELECT * FROM BlackList b WHERE b.ListId = ${listId}`
+//         } else {
+//             sql = `SELECT * FROM WatchList w WHERE w.ListId = ${listId}`
+//         }
+//     }
     
-    connection.query(sql, (err, result) => {
-        if (err) {
-            response.status(400).send('Error in database operation');
-        }
-        response.send(result);
-    });
-});
-app.post('/list', (request, response) => {
-    var blackList = request.body.blackList;
-    var listId = request.body.listId;
-    var userId = request.body.UserId;
-    var sql;
-    if (blackList) {
-        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId}) `;
-    } else {
-        sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
-    }
-    console.log(sql);
-    connection.query(sql, (err, result) => {
-        if (err) {
-            response.status(400).send('Error in database operation');
-        }
-        console.log('record inserted');
-        res.redirect('/');
+//     connection.query(sql, (err, result) => {
+//         if (err) {
+//             response.status(400).send('Error in database operation');
+//         }
+//         response.send(result);
+//     });
+// });
+// app.post('/list', (request, response) => {
+//     var blackList = request.body.blackList;
+//     var listId = request.body.listId;
+//     var userId = request.body.UserId;
+//     var sql;
+//     if (blackList) {
+//         sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO BlackList(ListId, UserId) VALUES (${listId}, ${userId})`;
+//     } else {
+//         sql = `INSERT IGNORE INTO MovieList(ListId) VALUES (${listId}); INSERT IGNORE INTO WatchList(ListId, UserId) VALUES (${listId}, ${userId})`;
+//     }
+//     console.log(sql);
+//     connection.query(sql, (err, result) => {
+//         if (err) {
+//             response.status(400).send('Error in database operation');
+//         }
+//         console.log('record inserted');
+//         res.redirect('/');
     
-    });
+//     });
 
-});
+// });
 
 
 app.get('/listmovie', (request, response) => {
@@ -302,7 +302,7 @@ app.get('/users', (request, response) => {
     
     var userName = request.query.username;
     var password = request.query.password;
-    var sql = `SELECT u.UserId FROM User u WHERE u.userName =  "${userName}" AND MD5("${password}")`
+    var sql = `SELECT u.UserId, w.ListId as WatchListId, b.ListId as BlackListId FROM User u Join WatchList w ON u.UserId = w.UserId JOIN BlackList b ON u.UserId = b.UserId WHERE u.userName = "${userName}" AND u.password = MD5("${password}");`
     console.log(sql)
 	
     connection.query(sql, (err, result) => {
