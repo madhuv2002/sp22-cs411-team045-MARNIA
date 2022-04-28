@@ -1,4 +1,7 @@
 import { Form, Input, Button, Checkbox } from 'antd';
+import './Title.css';
+import '@ant-design/compatible/assets/index.css';
+import 'antd/dist/antd.css'; 
 
 const LoginPage = () => {
   const onFinish = (values) => {
@@ -10,6 +13,10 @@ const LoginPage = () => {
   };
 
   return (
+      <div>
+    <div className="Title">
+        <h1>FlixFind+</h1>
+      </div>
     <Form
       name="basic"
       labelCol={{
@@ -73,6 +80,7 @@ const LoginPage = () => {
         </Button>
       </Form.Item>
     </Form>
+    </div>
   );
 };
 
