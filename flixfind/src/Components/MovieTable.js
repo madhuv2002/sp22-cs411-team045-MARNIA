@@ -11,7 +11,7 @@ import { NULL } from 'mysql/lib/protocol/constants/types';
 import { Row, Col } from 'antd';
 import './Style.css';
 
-
+const MINUTE_MS = 3600000;
 
 const MovieTable = () => {
   const { id, bid, wid } = useParams();
@@ -235,6 +235,13 @@ const MovieTable = () => {
     FlixService.addRating(obj);
   }
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('This will be called every 1 minute');
+    }, MINUTE_MS);
+  
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchPlatforms = async () => {
