@@ -40,7 +40,7 @@ app.get('/movies', (request, response) => {
         var avgsql = "SELECT AVG(m.score) FROM Movie m";
     } 
     if (userId != null) {
-        var sql = `SELECT m.MovieId, m.Title, m.Year, m.AgeRating, m.Score, ratings.RatingScore FROM Movie m Left Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings on m.MovieId = ratings.MovieId`;
+        var sql = `SELECT m.MovieId, m.Title, m.Year, m.AgeRating, m.Score, ratings.RatingScore, rv.Review FROM Movie m Natural Join Review rv Left Join (SELECT r.MovieId, r.Score as RatingScore FROM Rating r WHERE r.UserId = ${userId}) as ratings on m.MovieId = ratings.MovieId`;
     } else {
         var sql = `SELECT * FROM Movie m `
     }
@@ -111,7 +111,7 @@ app.get('/movies', (request, response) => {
         }
     }
     if (acclaimed == 1) {
-        
+        sql = `SELECT m.MovieId, m.Title, m.Year, m.AgeRating, m.Score, ratings.RatingScore, r2.Review FROM Movie m Natural Join Review r Left Join (SELECT r2.MovieId, r2.Score as RatingScore FROM Rating r2 WHERE r2.UserId = ${userId}) as ratings2 on m2.MovieId = ratings2.MovieId`;
         sql = "SELECT * FROM Movie m1 WHERE m1.Score > (" + avgsql + ")" + " AND " + where
         sql += " ORDER BY m1.Score desc"
     } else {
@@ -304,13 +304,22 @@ app.get('/users', (request, response) => {
     var password = request.query.password;
     var sql = `SELECT u.UserId, w.ListId as WatchListId, b.ListId as BlackListId FROM User u Join WatchList w ON u.UserId = w.UserId JOIN BlackList b ON u.UserId = b.UserId WHERE u.userName = "${userName}" AND u.password = MD5("${password}");`
     console.log(sql)
-	
     connection.query(sql, (err, result) => {
         if (err) {
             response.status(400).send('Error in database operation');
         }
         console.log(result);
         response.send(result);
+    });
+})
+app.post('/reviews', (request, response) => {
+    var sql = `CALL ratingUpdate();`;
+    console.log(sql)
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        console.log('procedure finished');
     });
 })
 app.listen(80, function() {
