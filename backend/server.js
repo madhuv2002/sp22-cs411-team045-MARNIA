@@ -28,7 +28,17 @@ app.use(cors());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 
-
+setInterval(function(){
+    var sql = `CALL ratingUpdate();`;
+    console.log(sql)
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        console.log('procedure finished');
+    });
+  }, 60*60*1000);
+  
 app.get('/', (request, response) => {
     response.send('Hello');
 }
