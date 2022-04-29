@@ -7,6 +7,7 @@ const res = require('express/lib/response');
 const req = require('express/lib/request');
 const cors = require('cors');
 const exp = require('constants');
+const { response } = require('express');
 
 
 
@@ -311,6 +312,16 @@ app.get('/users', (request, response) => {
         }
         console.log(result);
         response.send(result);
+    });
+})
+app.post('/reviews', (request, response) => {
+    var sql = `CALL ratingUpdate();`;
+    console.log(sql);
+    connection.query(sql, (err, result) => {
+        if (err) {
+            response.status(400).send('Error in database operation');
+        }
+        console.log('record inserted');
     });
 })
 app.listen(80, function() {
