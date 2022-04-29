@@ -2,8 +2,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import '@ant-design/compatible/assets/index.css';
-import { Rate, Input, Space } from 'antd';
+import { Rate, Input, Space} from 'antd';
 import { Table, Tag, Checkbox, Slider, Radio } from 'antd';
+import { DislikeOutlined, LikeOutlined, MinusOutlined} from '@ant-design/icons'
 import { Modal, Button, Card } from 'antd';
 import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import FlixService from '../api';
@@ -11,7 +12,6 @@ import { NULL } from 'mysql/lib/protocol/constants/types';
 import { Row, Col } from 'antd';
 import './Style.css';
 
-const MINUTE_MS = 3600000;
 
 const MovieTable = () => {
   const { id, bid, wid } = useParams();
@@ -33,6 +33,16 @@ const MovieTable = () => {
   const removeFromBlackList = (e) => {
     console.log("remove from blacklist");
     FlixService.removeFromBlackList({id: bid, values: e});
+  }
+
+  function getFeedback(num) {
+    if (num === 2) {
+      return <DislikeOutlined />
+    }
+    if (num === 0) {
+      return <MinusOutlined />
+    }
+    return <LikeOutlined />
   }
 
   const columns = [
@@ -114,7 +124,7 @@ const MovieTable = () => {
       title: 'User Feedback',
       dataIndex: 'review',
       key: 'review',
-      render: text => <a>{text}</a>,
+      render: (number) => getFeedback(number)
 
     }
   ];
@@ -241,15 +251,6 @@ const MovieTable = () => {
   function onChangeRating(obj) {
     FlixService.addRating(obj);
   }
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log('This will be called every 1 minute');
-    }, MINUTE_MS);
-  
-    return () => clearInterval(interval);
-  }, []);
-
   useEffect(() => {
     const fetchPlatforms = async () => {
       const platformRes = await FlixService.getPlatforms();
@@ -304,7 +305,7 @@ const MovieTable = () => {
             platforms = []
           }
           var id = movie.MovieId;
-          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: {userId: id, movieId: id, rating: movie.RatingScore} , action: movie.MovieId });
+          populateMovies.push({ key: movie.MovieId, title: movie.Title, ageRating: movie.AgeRating, score: movie.Score, year: movie.Year, platforms: platforms, userRating: {userId: id, movieId: id, rating: movie.RatingScore} , action: movie.MovieId, review: movie.Review });
         })
       }
       catch (e) {
