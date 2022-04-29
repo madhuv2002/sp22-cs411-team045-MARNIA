@@ -22,9 +22,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const onFinish = async (values) => {
     console.log(values);
-    const userIdRes = await FlixService.getUserID(values);
-    // console.log(userIdRes[0].UserId);
-    navigate(`/home/${userIdRes[0].UserId}`);
+    const userRes = await FlixService.getUserID(values);
+    console.log(userRes);
+    navigate(`/home/${userRes[0].UserId}/${userRes[0].BlackListId}/${userRes[0].WatchListId}`);
     console.log('Success:', values);
   };
 
@@ -42,9 +42,6 @@ const LoginPage = () => {
   const onFinishFailedCreate = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [userid, setUserId] = useState();
 
   // const getUserID = (e) => {
   //   // const userIDRes = FlixService.getUserID();

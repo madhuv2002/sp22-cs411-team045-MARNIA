@@ -14,23 +14,25 @@ import './Style.css';
 
 
 const MovieTable = () => {
-  const { id } = useParams();
+  const { id, bid, wid } = useParams();
   const addToWatchList = (e) => {
-    FlixService.addToWatchList(e);
+    console.log(e);
+    FlixService.addToWatchList({id: wid, values: e});
   }
 
 
   const removeFromWatchList = (e) => {
-    FlixService.removeFromWatchList(e);
+    FlixService.removeFromWatchList({id: wid, values: e});
   }
 
   const addToBlackList = (e) => {
-    FlixService.addToBlackList(e);
+    FlixService.addToBlackList({id: bid, values: e});
   }
 
 
   const removeFromBlackList = (e) => {
-    FlixService.removeFromBlackList(e);
+    console.log("remove from blacklist");
+    FlixService.removeFromBlackList({id: bid, values: e});
   }
 
   const columns = [
@@ -251,19 +253,21 @@ const MovieTable = () => {
 
   useEffect(() => {
     const fetchWatchList = async () => {
-      const watchlistRes = await FlixService.getWatchList();
+      console.log(id)
+      const watchlistRes = await FlixService.getWatchList(wid);
       var movieTitles = [];
       watchlistRes.forEach(function (movie) {
         movieTitles.push(movie.Title);
       })
+      console.log(movieTitles);
       setWatchList(movieTitles);
     }
     fetchWatchList();
-  }, [isModalVisible]);
+  }, [id, isModalVisible, wid]);
 
   useEffect(() => {
     const fetchBlackList = async () => {
-      const blacklistRes = await FlixService.getBlackList();
+      const blacklistRes = await FlixService.getBlackList(bid);
       var movieTitles = [];
       blacklistRes.forEach(function (movie) {
         movieTitles.push(movie.Title);
@@ -271,7 +275,7 @@ const MovieTable = () => {
       setBlackList(movieTitles);
     }
     fetchBlackList();
-  }, [isModalBlackVisible]);
+  }, [bid, isModalBlackVisible]);
 
   useEffect(() => {
     const populateMovies = [];
