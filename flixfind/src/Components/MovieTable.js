@@ -110,6 +110,13 @@ const MovieTable = () => {
         </Space>
       ),
     },
+    {
+      title: 'User Feedback',
+      dataIndex: 'review',
+      key: 'review',
+      render: text => <a>{text}</a>,
+
+    }
   ];
 
   const [netflix, setNetflix] = useState();
